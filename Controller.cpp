@@ -4,6 +4,8 @@
 #include <string>
 #include <stdio.h>
 #include <vector>
+#include <SDL.h>
+#undef main
 using std::string;
 
 using namespace Entities;
@@ -161,7 +163,7 @@ int main(int argc, char const *argv[])
 
 	//frame counter
 	SDLTimer capTimer;
-	int countedFrames;
+	int countedFrames = 0;
 	timer.start();
 
 	while( !quit )

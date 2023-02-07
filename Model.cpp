@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <string>
+#include <cmath>
 #include "Model.h"
 #include <cassert>
 #include <vector>
@@ -170,26 +171,9 @@ int Entity::getHeight()
 	return height;
 }
 
-//--------- RealEntity -------//
-
-RealEntity::RealEntity(int x,int y,int width, int height) : Entity(x,y,width,height) {}
-
-RealEntity::~RealEntity()
-{
-	// printf("destroying real entity");
-}
-
-void RealEntity::draw()
-{
-	printf("x->%d ",x);
-	printf("y->%d\n",y);
-
-}
-
-
 //-------- Living Entity --------//
 
-LivingEntity::LivingEntity(int x,int y,int width, int height) : RealEntity(x,y,width,height)
+LivingEntity::LivingEntity(int x,int y,int width, int height) : Entity(x,y,width,height)
 {
 	//Living Entity are drawable as default behaviour
 	this->drawable = true;
@@ -547,9 +531,8 @@ void Shield::createShield(int x, int y, int type, int row, int column)
 			}
 		default:
 			{
-				//no shield must be done
-				printf("row: %d, column: %d\n",row,column);
-				break;
+				return;
+				
 			}
 	}
 
@@ -899,6 +882,7 @@ void ClassicSpaceBattle::createEnemies()
 			else
 			{
 				printf("COULD NOT FIND CLASS_SHIP!");
+				return;
 			}
 			std::shared_ptr<EnemyShip> nextShipPointer(nextShip);
 			this->enemies[i].push_back(nextShipPointer);

@@ -6,6 +6,7 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <cmath>
 
 using namespace ViewEntities;
 using namespace Entities;
@@ -590,7 +591,7 @@ void ClassicSpaceBattleView::initializeSingleShield(int index)
 	{
 		for(int j = 0; j < currentShield->getShieldColumns(); j++)
 		{
-			if(i == 0 && ( j == 3 | j == 4 | j==5 ) )
+			if(i == 0 && ( j == 3 || j == 4 || j==5 ) )
 			{
 				std::pair<DrawableObject*,DrawableObject*> currentPair(NULL,NULL);
 				this->shields[index].push_back(currentPair);
@@ -771,7 +772,7 @@ void ClassicSpaceBattleView::renderShields()
 
 			int row = std::floor(j/columns);
 			int column = j%columns;
-			if(row == 0 && ( column == 3 |column == 4| column==5)) //0,3;0,4;0,5 are not part of the shield
+			if(row == 0 && ( column == 3 || column == 4 || column==5)) //0,3;0,4;0,5 are not part of the shield
 			{
 				continue;
 			}

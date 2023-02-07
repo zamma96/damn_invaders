@@ -84,24 +84,12 @@ namespace Entities
 			int getY();
 			int getWidth();
 			int getHeight();
-			virtual void draw() = 0;
+			// virtual void draw() = 0;
 	};
 
-	class RealEntity : public Entity {
-			/*field that represents the sprite.
-			we can manage the drawing in different manners:
-			 -draw it from the Entity it self
-			 -Recover from the Entity the information needed for rendering,
-				such as x,y,width,heigth,pathToFile (or Sprite itself)
-			*/ 
-		public:
-			RealEntity(int,int,int,int); //to be added sprite later, see above
-			~RealEntity();
-			void draw(); //needs to be redeclared?
+	
 
-	};
-
-	class LivingEntity : public RealEntity{
+	class LivingEntity : public Entity{
 		private:
 			bool drawable;
 		public:
