@@ -707,6 +707,12 @@ bool ClassicSpaceBattleView::changeModelAndRestart(ClassicSpaceBattle* model)
 	this->shields.clear();
 	this->changingText.clear();
 	this->lifesShips.clear();
+	while(!this->mainMusic.empty())
+	{
+		this->mainMusic.pop();
+	}
+	
+
 	while(!this->explosions.empty())
 	{
 		ExplosionDrawable* temp = this->explosions.front();
@@ -719,6 +725,8 @@ bool ClassicSpaceBattleView::changeModelAndRestart(ClassicSpaceBattle* model)
 	this->model = model;
 	this->lastScore = 0;
 	this->lifes = this->model->getPlayerLifes();
+	this->framesSinceLastAudio = 0;
+	this->currentFrameTreshold = this->model->getEnemiesRemaining();
 	return spaceBattleInit(true);
 }
 
