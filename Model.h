@@ -427,6 +427,7 @@ namespace GameEntities
 			int rowsOfEnemies;
 			int numberOfShields;
 			int enemiesPerRow;
+			int enemiesRemaining;
 			int playerLifes;
 			//the game score
 			int score;
@@ -491,6 +492,7 @@ namespace GameEntities
 			ClassicGamePhases getGamePhase();
 			int getPlayerLifes();
 			int getScore();
+			int getEnemiesRemaining();
 
 	};
 

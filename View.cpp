@@ -461,6 +461,8 @@ ClassicSpaceBattleView::ClassicSpaceBattleView(ClassicSpaceBattle* spaceBattle)
 	this->player = nullptr;
 	this->lastScore = 0;
 	this->lifes = this->model->getPlayerLifes();
+	this->framesSinceLastAudio = 0;
+	this->currentFrameTreshold = this->model->getEnemiesRemaining();
 	int hudElements = HudLiveElements::NR_ELEMENTS;
 	for(int i = 0; i < hudElements ; i++)
 	{
@@ -902,10 +904,20 @@ void ClassicSpaceBattleView::renderHUD()
 void ClassicSpaceBattleView::audioUpdate()
 {
 	//audio update; the music goes faster the less aliens there are
-	AudioSource* currAudio = this->mainMusic.front();
-	this->mainMusic.pop();
-	this->mainMusic.push(currAudio);
-	currAudio->play();
+	this->currentFrameTreshold = this->model->getEnemiesRemaining();
+	if(this->framesSinceLastAudio >= this->currentFrameTreshold)
+	{
+		AudioSource* currAudio = this->mainMusic.front();
+		this->mainMusic.pop();
+		this->mainMusic.push(currAudio);
+		currAudio->play();
+		this->framesSinceLastAudio = 0;
+	}
+	else
+	{
+		this->framesSinceLastAudio ++;
+	}
+
 }
 
 void ClassicSpaceBattleView::addExplosion(int x, int y)

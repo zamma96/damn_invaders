@@ -24,6 +24,8 @@ namespace ViewEntities
 		LIFES,
 		NR_ELEMENTS
 	};
+
+
 	
 	class Drawable{
 		protected:
@@ -204,6 +206,9 @@ namespace ViewEntities
 			//---SOUND----//
 			queue<AudioSource*> mainMusic;
 			AudioSource* explosion;
+			int framesSinceLastAudio;
+			int currentFrameTreshold;
+
 
 			int lastScore;
 			int lifes;

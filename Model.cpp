@@ -737,6 +737,7 @@ ClassicSpaceBattle::ClassicSpaceBattle(vector<EnemyShipClasses> classes,int scal
 	this->rowsOfEnemies 		= rowsOfEnemies;
 	this-> numberOfShields 		= shields;
 	this-> enemiesPerRow 		= enemiesPerRow;
+	this->enemiesRemaining      = enemiesPerRow*rowsOfEnemies;
 	this->classPerRow 			= classes;
 	this->enemies 				= vector<vector<std::shared_ptr<EnemyShip>>>(enemiesPerRow);
 	this->currentPhase 			= PUSH;
@@ -1186,7 +1187,7 @@ void ClassicSpaceBattle::checkBulletsCollision()
 		else if(checkBulletCollisionWithEnemy(this->bullets.at(left_index).get()))
 		{
 				
-
+			this->enemiesRemaining -= 1; //we decrease the counter of enemies
 			if(!(left_index == right_index))
 			{
 
@@ -1524,6 +1525,11 @@ int ClassicSpaceBattle::getPlayerLifes()
 int ClassicSpaceBattle::getScore()
 {
 	return this->score;
+}
+
+int ClassicSpaceBattle::getEnemiesRemaining()
+{
+	return this->enemiesRemaining;
 }
 
 //-----------------------------//
