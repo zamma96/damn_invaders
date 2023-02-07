@@ -614,6 +614,7 @@ bool ClassicSpaceBattleView::audioInit(bool result)
 	this->mainMusic.push(new AudioSource(MAIN_MUSIC_THREE_PATH));
 	this->mainMusic.push(new AudioSource(MAIN_MUSIC_FOUR_PATH));
 	result = true;
+	return result;
 }
 
 void ClassicSpaceBattleView::createHudElements()
