@@ -15,130 +15,130 @@ using namespace GameEntities;
 using namespace Utilities;
 //--- parametrized playerShip values ---//
 
-const int 	basic_player_ship_width 	= 13;
-const int 	basic_player_ship_height 	= 8;
-const int 	basic_player_ship_hp		= 10;
-const int 	basic_player_ship_damage    = 5;
-const int 	basic_player_ship_velocity	= 1;
-const float basic_player_ship_cooldown  = 0.7;
-string basic_player_texture_path 		= "player_ship.png";
-string player_bullet_texture_path		= "simple_bullet.png";
-const int   basic_player_bullet_height  = 5;
-const int 	basic_player_bullet_width	= 1;
-const int 	player_ship_bullet_offset   = 4;
+const int 	BASIC_PLAYER_SHIP_WIDTH 	= 13;
+const int 	BASIC_PLAYER_SHIP_HEIGHT 	= 8;
+const int 	BASIC_PLAYER_SHIP_HP		= 10;
+const int 	BASIC_PLAYER_SHIP_DAMAGE    = 5;
+const int 	BASIC_PLAYER_SHIP_VELOCITY	= 1;
+const float BASIC_PLAYER_SHIP_COOLDOWN  = 0.7;
+string BASIC_PLAYER_TEXTURE_PATH 		= "player_ship.png";
+string PLAYER_BULLET_TEXTURE_PATH		= "simple_bullet.png";
+const int   BASIC_PLAYER_BULLET_HEIGHT  = 5;
+const int 	BASIC_PLAYER_BULLET_WIDTH	= 1;
+const int 	PLAYER_SHIP_BULLET_OFFSET   = 4;
 
-const int 	player_bullet_velocity 		= 4;
+const int 	PLAYER_BULLET_VELOCITY 		= 4;
 
 
 //--- parametrized ships values ---//
-string basic_bullet_texture_path		= "enemy_bullet_";
-const int   basic_enemy_bullet_height 	= 7;
-const int 	basic_enemy_bullet_width	= 3;
-const float 	basic_enemy_bullet_velocity	= 1.5;
+string BASIC_BULLET_TEXTURE_PATH		= "enemy_bullet_";
+const int   BASIC_ENEMY_BULLET_HEIGHT 	= 7;
+const int 	BASIC_ENEMY_BULLET_WIDTH	= 3;
+const float 	BASIC_ENEMY_BULLET_VELOCITY	= 1.5;
 //--- Class One "Octopus" Ship ---// 
 
-const int 	class_one_width 			= 12;
-const int 	class_one_height 			= 8;
+const int 	CLASS_ONE_WIDTH 			= 12;
+const int 	CLASS_ONE_HEIGHT 			= 8;
 
-const int 	class_one_points			= 10;
-const int 	class_one_hp 				= 5;
-const int 	class_one_damage 			= 10;
-const int 	class_one_velocity 			= 1;
-const float class_one_cooldown 			= 1.0;
-const string* class_one_name 			= new string("Class One");
-string class_one_texture_path 			= "octopus_ship_complete.png";
+const int 	CLASS_ONE_POINTS			= 10;
+const int 	CLASS_ONE_HP 				= 5;
+const int 	CLASS_ONE_DAMAGE 			= 10;
+const int 	CLASS_ONE_VELOCITY 			= 1;
+const float CLASS_ONE_COOLDOWN 			= 1.0;
+const string* CLASS_ONE_NAME 			= new string("Class One");
+string CLASS_ONE_TEXTURE_PATH 			= "octopus_ship_complete.png";
 
 //--- Class Two "Crab" Ship ---// 
 
-const int 	class_two_width 			= 11;
-const int 	class_two_height 			= 8;
+const int 	CLASS_TWO_WIDTH 			= 11;
+const int 	CLASS_TWO_HEIGHT 			= 8;
 
-const int 	class_two_points			= 20;
-const int 	class_two_hp 				= 5;
-const int 	class_two_damage 			= 10;
-const int 	class_two_velocity 			= 1;
-const float class_two_cooldown 			= 1.0;
-const string* class_two_name 			= new string("Class Two");
-string class_two_texture_path 			= "crab_ship_complete.png";
+const int 	CLASS_TWO_POINTS			= 20;
+const int 	CLASS_TWO_HP 				= 5;
+const int 	CLASS_TWO_DAMAGE 			= 10;
+const int 	CLASS_TWO_VELOCITY 			= 1;
+const float CLASS_TWO_COOLDOWN 			= 1.0;
+const string* CLASS_TWO_NAME 			= new string("Class Two");
+string CLASS_TWO_TEXTURE_PATH 			= "crab_ship_complete.png";
 
 //--- Class Three "Squid" Ship ---// 
 
-const int 	class_three_width 			= 8;
-const int 	class_three_height 			= 8;
+const int 	CLASS_THREE_WIDTH 			= 8;
+const int 	CLASS_THREE_HEIGHT 			= 8;
 
-const int 	class_three_points			= 30;
-const int 	class_three_hp 				= 5;
-const int 	class_three_damage 			= 10;
-const int 	class_three_velocity 		= 1;
-const float class_three_cooldown 		= 1.0;
-const string* class_three_name 			= new string("Class Three");
-string class_three_texture_path 		= "squid_ship_complete.png";
+const int 	CLASS_THREE_POINTS			= 30;
+const int 	CLASS_THREE_HP 				= 5;
+const int 	CLASS_THREE_DAMAGE 			= 10;
+const int 	CLASS_THREE_VELOCITY 		= 1;
+const float CLASS_THREE_COOLDOWN 		= 1.0;
+const string* CLASS_THREE_NAME 			= new string("Class Three");
+string CLASS_THREE_TEXTURE_PATH 		= "squid_ship_complete.png";
 
 
 
 //--- Parametrized Boards Values ---//
 //--- Classic Board ---//
 //mp = mid-pivoted -> it appears that text elements are not bottom right alligned, but mid right.
-const int 	classic_board_height 		= 256;
-const int 	classic_board_width 		= 224;
-const int   classic_board_score_y		= 12;
-const int   classic_board_score_x		= 9;
-const int 	classic_board_hiscore_x 	= 81;
-const int   classic_board_score2_x		= 153;
-const int 	classic_board_score_number_y= 28;
-const int   classic_board_score_number_x= 25;
-const int 	classic_board_hs_number_x 	= 89;
-const int 	classic_upperHud 			= 36;
-const int 	classic_lowerHud 			= 240;
-const int 	classic_lifes_y				= 241;
-const int 	classic_lifes_x				= 26;
-const int   classic_credit_x			= 137;
-const int   classic_credit_y			= 241; //mp
-const int 	classic_lifes_number_x		= 9;
-const int 	classic_enemyYAreaCenter 	= 96;
-const int 	classic_shield_y 			= 208;
-const int 	classic_shield_x			= 30; //to be calculated
-const int   classic_shield_offset		= 30; //to be calculated
-const int 	classic_shipYCenter 		= 220;
-const int 	classic_enemyXOffset 		= 15;
-const int 	classic_enemyYOffset 		= 20;
-const int 	classic_enemyHeight 		= 8;
-const int 	classic_xCenter 			= 112;
-const int 	classic_enemyLeftBorder		= 15;
-const int 	classic_enemyRightBorder 	= 209;
-const int   classic_player_x_spawn      = 20;
-const int  	classic_special_ship_y		= 44; //mp
-const int 	classic_bullet_land_offset  = 5;
+const int 	CLASSIC_BOARD_HEIGHT 		= 256;
+const int 	CLASSIC_BOARD_WIDTH 		= 224;
+const int   CLASSIC_BOARD_SCORE_Y		= 12;
+const int   CLASSIC_BOARD_SCORE_X		= 9;
+const int 	CLASSIC_BOARD_HISCORE_X 	= 81;
+const int   CLASSIC_BOARD_SCORE2_X		= 153;
+const int 	CLASSIC_BOARD_SCORE_NUMBER_Y= 28;
+const int   CLASSIC_BOARD_SCORE_NUMBER_X= 25;
+const int 	CLASSIC_BOARD_HS_NUMBER_X 	= 89;
+const int 	CLASSIC_UPPERHUD 			= 36;
+const int 	CLASSIC_LOWERHUD 			= 240;
+const int 	CLASSIC_LIFES_Y				= 241;
+const int 	CLASSIC_LIFES_X				= 26;
+const int   CLASSIC_CREDIT_X			= 137;
+const int   CLASSIC_CREDIT_Y			= 241; //mp
+const int 	CLASSIC_LIFES_NUMBER_X		= 9;
+const int 	CLASSIC_ENEMY_Y_AREA_CENTER	= 96;
+const int 	CLASSIC_SHIELD_Y 			= 208;
+const int 	CLASSIC_SHIELD_X			= 30; //to be calculated
+const int   CLASSIC_SHIELD_OFFSET		= 30; //to be calculated
+const int 	CLASSIC_SHIP_Y_CENTER 		= 220;
+const int 	CLASSIC_ENEMY_X_OFFSET 		= 15;
+const int 	CLASSIC_ENEMY_Y_OFFSET 		= 20;
+const int 	CLASSIC_ENEMY_HEIGHT 		= 8;
+const int 	CLASSIC_X_CENTER 			= 112;
+const int 	CLASSIC_ENEMY_LEFT_BORDER	= 15;
+const int 	CLASSIC_ENEMY_RIGHT_BORDER 	= 209;
+const int   CLASSIC_PLAYER_X_SPAWN      = 20;
+const int  	CLASSIC_SPECIAL_SHIP_Y		= 44; //mp
+const int 	CLASSIC_BULLET_LAND_OFFSET  = 5;
 
 //--- parametrized ClassicSpaceBattle values ---//
-const int 	classic_push_distance 		= 3;
-const int 	classic_down_distance	 	= 4;
-const int 	classic_player_lifes		= 3;
-const int 	classic_number_of_shields	= 4;
+const int 	CLASSIC_PUSH_DISTANCE 		= 3;
+const int 	CLASSIC_DOWN_DISTANCE	 	= 4;
+const int 	CLASSIC_PLAYER_LIFES		= 3;
+const int 	CLASSIC_NUMBER_OF_SHIELDS	= 4;
 //number of frames between movements of enemies; the lower, the faster they move
-const int   classic_movement_ratio		= 2;
+const int   CLASSIC_MOVEMENT_RATIO		= 2;
 
 //--- parametrized game values ---///
-const int global_fps 					= 60;
-const int enemy_shots_delay				= 40;
+const int GLOBAL_FPS 					= 60;
+const int ENEMY_SHOTS_DELAY				= 40;
 
 
 //--- parametrized Shield values ---//
 
 //first row is bottom row in a graphical visualization
-const vector<vector<int>> classic_shield_types 	= { {5,5,6,0,0,0,7,5,5},
+const vector<vector<int>> CLASSIC_SHIELD_TYPES 	= { {5,5,6,0,0,0,7,5,5},
 													{5,5,5,5,5,5,5,5,5},
 													{5,5,5,5,5,5,5,5,5},
 													{1,2,5,5,5,5,5,4,3} };
-const int shield_rows					= 4;
-const int shield_columns				= 9;
-string intact_shield_prefix				= "shield/intact_shield_";
-string broken_shield_prefix				= "shield/broken_shield_";
-const int broken_cardinality			= 8;
+const int SHIELD_ROWS					= 4;
+const int SHIELD_COLUMNS				= 9;
+string INTACT_SHIELD_PREFIX				= "shield/intact_shield_";
+string BROKEN_SHIELD_PREFIX				= "shield/broken_shield_";
+const int BROKEN_CARDINALITY			= 8;
 
 
-const int unit_shield_width				= 2;
-const int unit_shield_height			= 4;
+const int UNIT_SHIELD_WIDTH				= 2;
+const int UNIT_SHIELD_HEIGHT			= 4;
 
 //---------  ENTITY  ---------//
 
@@ -347,7 +347,7 @@ string Ship::getBulletTexturePath()
 
 //------  PlayerShip  ------//
 
-PlayerShip::PlayerShip(int x,int y,int width, int height, int hp, int damage, int velocity, float cooldown,string* name,string texturePath) : Ship(x,y,width,height,hp,damage,velocity,cooldown, texturePath,player_bullet_texture_path)
+PlayerShip::PlayerShip(int x,int y,int width, int height, int hp, int damage, int velocity, float cooldown,string* name,string texturePath) : Ship(x,y,width,height,hp,damage,velocity,cooldown, texturePath,PLAYER_BULLET_TEXTURE_PATH)
 {
 	this->playerName = name;
 }
@@ -431,7 +431,7 @@ void EnemyShip::printSummary()
 //----------------------------//
 
 /* The Constructor simply calls the superclass abstract constructor with parametrized datas regarding that kind of ship class */
-ClassOneShip::ClassOneShip(int x,int y,int scale_ratio,int pushDistance, int downDistance) : EnemyShip(x,y,class_one_width*scale_ratio,class_one_height*scale_ratio,class_one_points,class_one_hp,class_one_damage,class_one_velocity,class_one_cooldown,pushDistance,downDistance,class_one_name,class_one_texture_path,basic_bullet_texture_path) {}
+ClassOneShip::ClassOneShip(int x,int y,int scale_ratio,int pushDistance, int downDistance) : EnemyShip(x,y,CLASS_ONE_WIDTH*scale_ratio,CLASS_ONE_HEIGHT*scale_ratio,CLASS_ONE_POINTS,CLASS_ONE_HP,CLASS_ONE_DAMAGE,CLASS_ONE_VELOCITY,CLASS_ONE_COOLDOWN,pushDistance,downDistance,CLASS_ONE_NAME,CLASS_ONE_TEXTURE_PATH,BASIC_BULLET_TEXTURE_PATH) {}
 
 void ClassOneShip::getClassName()
 {
@@ -442,7 +442,7 @@ void ClassOneShip::getClassName()
 //------- ClassTwoShip -------//
 //----------------------------//
 
-ClassTwoShip::ClassTwoShip(int x,int y,int scale_ratio,int pushDistance, int downDistance) : EnemyShip(x,y,class_two_width*scale_ratio,class_two_height*scale_ratio,class_two_points,class_two_hp,class_two_damage,class_two_velocity,class_two_cooldown,pushDistance,downDistance,class_two_name,class_two_texture_path,basic_bullet_texture_path) {}
+ClassTwoShip::ClassTwoShip(int x,int y,int scale_ratio,int pushDistance, int downDistance) : EnemyShip(x,y,CLASS_TWO_WIDTH*scale_ratio,CLASS_TWO_HEIGHT*scale_ratio,CLASS_TWO_POINTS,CLASS_TWO_HP,CLASS_TWO_DAMAGE,CLASS_TWO_VELOCITY,CLASS_TWO_COOLDOWN,pushDistance,downDistance,CLASS_TWO_NAME,CLASS_TWO_TEXTURE_PATH,BASIC_BULLET_TEXTURE_PATH) {}
 
 void ClassTwoShip::getClassName()
 {
@@ -453,7 +453,7 @@ void ClassTwoShip::getClassName()
 //------ ClassThreeShip ------//
 //----------------------------//
 
-ClassThreeShip::ClassThreeShip(int x,int y,int scale_ratio,int pushDistance, int downDistance) : EnemyShip(x,y,class_three_width*scale_ratio,class_three_height*scale_ratio,class_three_points,class_three_hp,class_three_damage,class_three_velocity,class_three_cooldown,pushDistance,downDistance,class_three_name,class_three_texture_path,basic_bullet_texture_path) {}
+ClassThreeShip::ClassThreeShip(int x,int y,int scale_ratio,int pushDistance, int downDistance) : EnemyShip(x,y,CLASS_THREE_WIDTH*scale_ratio,CLASS_THREE_HEIGHT*scale_ratio,CLASS_THREE_POINTS,CLASS_THREE_HP,CLASS_THREE_DAMAGE,CLASS_THREE_VELOCITY,CLASS_THREE_COOLDOWN,pushDistance,downDistance,CLASS_THREE_NAME,CLASS_THREE_TEXTURE_PATH,BASIC_BULLET_TEXTURE_PATH) {}
 
 void ClassThreeShip::getClassName()
 {
@@ -470,10 +470,10 @@ Shield::Shield(int startingX,int startingY, int scale_ratio)
 	this->startingX = startingX;
 	this->startingY = startingY;
 	this->scale_ratio = scale_ratio;
-	this->rows = shield_rows;
-	this->columns = shield_columns;
-	this->unitShieldWidth = unit_shield_width;
-	this->unitShieldHeight = unit_shield_height;
+	this->rows = SHIELD_ROWS;
+	this->columns = SHIELD_COLUMNS;
+	this->unitShieldWidth = UNIT_SHIELD_WIDTH;
+	this->unitShieldHeight = UNIT_SHIELD_HEIGHT;
 	this->shieldWidth =	(this->unitShieldWidth*this->scale_ratio)*this->columns;
 	this->shieldHeight = (this->unitShieldHeight*this->scale_ratio)*this->rows;
 	this->shieldParts.resize(this->rows,vector<std::shared_ptr<ShieldUnit>>(this->columns));
@@ -489,7 +489,7 @@ void Shield::init()
 		{
 			x = this->startingX	+ (j*(this->unitShieldWidth*this->scale_ratio));
 			y = this->startingY - (i*(this->unitShieldHeight*this->scale_ratio));
-			createShield(x,y,classic_shield_types[i][j],i,j);
+			createShield(x,y,CLASSIC_SHIELD_TYPES[i][j],i,j);
 		}
 	}
 
@@ -497,10 +497,10 @@ void Shield::init()
 
 void Shield::createShield(int x, int y, int type, int row, int column)
 {
-	string intactTexturePath = intact_shield_prefix;
+	string intactTexturePath = INTACT_SHIELD_PREFIX;
 	string brokenTexturePath = randomBrokenPath();
 	ShieldUnit* current;
-	// string complete = intact_shield_prefix+"1.png";
+	// string complete = INTACT_SHIELD_PREFIX+"1.png";
 	// std::cout << complete <<std::endl;
 	switch(type)
 	{
@@ -512,37 +512,37 @@ void Shield::createShield(int x, int y, int type, int row, int column)
 			}
 		case 1:
 			{
-				current = new ShieldUnit(x,y,unit_shield_width*this->scale_ratio,unit_shield_height*this->scale_ratio,intactTexturePath+"1.png",brokenTexturePath,true);
+				current = new ShieldUnit(x,y,UNIT_SHIELD_WIDTH*this->scale_ratio,UNIT_SHIELD_HEIGHT*this->scale_ratio,intactTexturePath+"1.png",brokenTexturePath,true);
 				break;
 			}
 		case 2:
 			{
-				current = new ShieldUnit(x,y,unit_shield_width*this->scale_ratio,unit_shield_height*this->scale_ratio,intactTexturePath+"2.png",brokenTexturePath,false);
+				current = new ShieldUnit(x,y,UNIT_SHIELD_WIDTH*this->scale_ratio,UNIT_SHIELD_HEIGHT*this->scale_ratio,intactTexturePath+"2.png",brokenTexturePath,false);
 				break;
 			}
 		case 3:
 			{
-				current = new ShieldUnit(x,y,unit_shield_width*this->scale_ratio,unit_shield_height*this->scale_ratio,intactTexturePath+"3.png",brokenTexturePath,true);
+				current = new ShieldUnit(x,y,UNIT_SHIELD_WIDTH*this->scale_ratio,UNIT_SHIELD_HEIGHT*this->scale_ratio,intactTexturePath+"3.png",brokenTexturePath,true);
 				break;
 			}
 		case 4:
 			{
-				current = new ShieldUnit(x,y,unit_shield_width*this->scale_ratio,unit_shield_height*this->scale_ratio,intactTexturePath+"4.png",brokenTexturePath,false);
+				current = new ShieldUnit(x,y,UNIT_SHIELD_WIDTH*this->scale_ratio,UNIT_SHIELD_HEIGHT*this->scale_ratio,intactTexturePath+"4.png",brokenTexturePath,false);
 				break;
 			}
 		case 5:
 			{
-				current = new ShieldUnit(x,y,unit_shield_width*this->scale_ratio,unit_shield_height*this->scale_ratio,intactTexturePath+"5.png",brokenTexturePath,false);
+				current = new ShieldUnit(x,y,UNIT_SHIELD_WIDTH*this->scale_ratio,UNIT_SHIELD_HEIGHT*this->scale_ratio,intactTexturePath+"5.png",brokenTexturePath,false);
 				break;
 			}
 		case 6:
 			{
-				current = new ShieldUnit(x,y,unit_shield_width*this->scale_ratio,unit_shield_height*this->scale_ratio,intactTexturePath+"6.png",brokenTexturePath,true);
+				current = new ShieldUnit(x,y,UNIT_SHIELD_WIDTH*this->scale_ratio,UNIT_SHIELD_HEIGHT*this->scale_ratio,intactTexturePath+"6.png",brokenTexturePath,true);
 				break;
 			}
 		case 7:
 			{
-				current = new ShieldUnit(x,y,unit_shield_width*this->scale_ratio,unit_shield_height*this->scale_ratio,intactTexturePath+"7.png",brokenTexturePath,true);
+				current = new ShieldUnit(x,y,UNIT_SHIELD_WIDTH*this->scale_ratio,UNIT_SHIELD_HEIGHT*this->scale_ratio,intactTexturePath+"7.png",brokenTexturePath,true);
 				break;
 			}
 		default:
@@ -561,10 +561,10 @@ string Shield::randomBrokenPath()
 {
 	
 	//could not work
-	string suffix = std::to_string(std::rand() % broken_cardinality);
-	// string complete = broken_shield_prefix+suffix+".png";
+	string suffix = std::to_string(std::rand() % BROKEN_CARDINALITY);
+	// string complete = BROKEN_SHIELD_PREFIX+suffix+".png";
 	// std::cout << complete <<std::endl;
-	return broken_shield_prefix+suffix+".png";
+	return BROKEN_SHIELD_PREFIX+suffix+".png";
 
 }
 
@@ -637,36 +637,36 @@ void Board::printSummary()
 
 //------- ClassicBoard -------//
 
-ClassicBoard::ClassicBoard(int scale_ratio) : Board(classic_board_width,classic_board_height,scale_ratio)
+ClassicBoard::ClassicBoard(int scale_ratio) : Board(CLASSIC_BOARD_WIDTH,CLASSIC_BOARD_HEIGHT,scale_ratio)
 {
-	this->upperHud 			= classic_upperHud*scale_ratio;
-	this->lowerHud 			= classic_lowerHud*scale_ratio;
-	this->enemyYAreaCenter 	= classic_enemyYAreaCenter*scale_ratio;
-	this->shieldY 			= classic_shield_y*scale_ratio;
-	this->shieldX    		= classic_shield_x*scale_ratio;
-	this->shieldOffset		= classic_shield_offset*scale_ratio;
-	this->shipYCenter 		= classic_shipYCenter*scale_ratio;
-	this->enemyXOffset 		= classic_enemyXOffset*scale_ratio;
-	this->enemyYOffset 		= classic_enemyYOffset*scale_ratio;
-	this->enemyHeight 		= classic_enemyHeight*scale_ratio;
-	this->xCenter 			= classic_xCenter*scale_ratio;
-	this->enemyLeftBorder   = classic_enemyLeftBorder*scale_ratio;
-	this->enemyRightBorder 	= classic_enemyRightBorder*scale_ratio;
-	this->scoreY 			= classic_board_score_y*scale_ratio;
-	this->scoreX            = classic_board_score_x*scale_ratio;
-	this->highScoreX		= classic_board_hiscore_x*scale_ratio;
-	this->score2X 			= classic_board_score2_x*scale_ratio;
-	this->scoreNumberY 		= classic_board_score_number_y*scale_ratio;
-	this->scoreNumberX 		= classic_board_score_number_x*scale_ratio;
-	this->hiScoreNumberX	= classic_board_hs_number_x*scale_ratio;
-	this->lifesY            = classic_lifes_y*scale_ratio;
-	this->lifesX       		= classic_lifes_x*scale_ratio;
-	this->creditX           = classic_credit_x*scale_ratio;
-	this->creditY           = classic_credit_y*scale_ratio;
-	this->lifesNumberX      = classic_lifes_number_x*scale_ratio;
-	this->playerXSpawn      = classic_player_x_spawn*scale_ratio;
-	this->specialShipY      = classic_special_ship_y*scale_ratio;
-	this->bulletLandOffset  = classic_bullet_land_offset*scale_ratio;
+	this->upperHud 			= CLASSIC_UPPERHUD*scale_ratio;
+	this->lowerHud 			= CLASSIC_LOWERHUD*scale_ratio;
+	this->enemyYAreaCenter 	= CLASSIC_ENEMY_Y_AREA_CENTER*scale_ratio;
+	this->shieldY 			= CLASSIC_SHIELD_Y*scale_ratio;
+	this->shieldX    		= CLASSIC_SHIELD_X*scale_ratio;
+	this->shieldOffset		= CLASSIC_SHIELD_OFFSET*scale_ratio;
+	this->shipYCenter 		= CLASSIC_SHIP_Y_CENTER*scale_ratio;
+	this->enemyXOffset 		= CLASSIC_ENEMY_X_OFFSET*scale_ratio;
+	this->enemyYOffset 		= CLASSIC_ENEMY_Y_OFFSET*scale_ratio;
+	this->enemyHeight 		= CLASSIC_ENEMY_HEIGHT*scale_ratio;
+	this->xCenter 			= CLASSIC_X_CENTER*scale_ratio;
+	this->enemyLeftBorder   = CLASSIC_ENEMY_LEFT_BORDER*scale_ratio;
+	this->enemyRightBorder 	= CLASSIC_ENEMY_RIGHT_BORDER*scale_ratio;
+	this->scoreY 			= CLASSIC_BOARD_SCORE_Y*scale_ratio;
+	this->scoreX            = CLASSIC_BOARD_SCORE_X*scale_ratio;
+	this->highScoreX		= CLASSIC_BOARD_HISCORE_X*scale_ratio;
+	this->score2X 			= CLASSIC_BOARD_SCORE2_X*scale_ratio;
+	this->scoreNumberY 		= CLASSIC_BOARD_SCORE_NUMBER_Y*scale_ratio;
+	this->scoreNumberX 		= CLASSIC_BOARD_SCORE_NUMBER_X*scale_ratio;
+	this->hiScoreNumberX	= CLASSIC_BOARD_HS_NUMBER_X*scale_ratio;
+	this->lifesY            = CLASSIC_LIFES_Y*scale_ratio;
+	this->lifesX       		= CLASSIC_LIFES_X*scale_ratio;
+	this->creditX           = CLASSIC_CREDIT_X*scale_ratio;
+	this->creditY           = CLASSIC_CREDIT_Y*scale_ratio;
+	this->lifesNumberX      = CLASSIC_LIFES_NUMBER_X*scale_ratio;
+	this->playerXSpawn      = CLASSIC_PLAYER_X_SPAWN*scale_ratio;
+	this->specialShipY      = CLASSIC_SPECIAL_SHIP_Y*scale_ratio;
+	this->bulletLandOffset  = CLASSIC_BULLET_LAND_OFFSET*scale_ratio;
 
 }
 
@@ -731,13 +731,13 @@ bool SpaceBattle::createPlayerBullet()
 {
 
 	//we need to address the cooldown otherwise we can spam bullets
-	if(!(this->currentTicks >= (this->lastShotTicks+(this->playerShip->getCooldown()*global_fps))))
+	if(!(this->currentTicks >= (this->lastShotTicks+(this->playerShip->getCooldown()*GLOBAL_FPS))))
 	{
 		return false;
 	}		
 	//the x of the bullet must be carefully calculated so we put it in a variable
-	int bullet_x = (this->playerShip->getX()+(this->playerShip->getWidth()/2)-((basic_player_bullet_width*this->scale_ratio)/2));
-	std::shared_ptr<Bullet> p1(new Bullet(bullet_x,this->playerShip->getY() - player_ship_bullet_offset*this->scale_ratio,basic_player_bullet_width*this->scale_ratio, basic_player_bullet_height*this->scale_ratio,basic_player_ship_damage,player_bullet_velocity*this->scale_ratio,-1));
+	int bullet_x = (this->playerShip->getX()+(this->playerShip->getWidth()/2)-((BASIC_PLAYER_BULLET_WIDTH*this->scale_ratio)/2));
+	std::shared_ptr<Bullet> p1(new Bullet(bullet_x,this->playerShip->getY() - PLAYER_SHIP_BULLET_OFFSET*this->scale_ratio,BASIC_PLAYER_BULLET_WIDTH*this->scale_ratio, BASIC_PLAYER_BULLET_HEIGHT*this->scale_ratio,BASIC_PLAYER_SHIP_DAMAGE,PLAYER_BULLET_VELOCITY*this->scale_ratio,-1));
 	this->bullets.push_back(p1);
 	this->lastShotTicks = this->currentTicks;
 	return true;
@@ -761,11 +761,11 @@ ClassicSpaceBattle::ClassicSpaceBattle(vector<EnemyShipClasses> classes,int scal
 	this->bullets 				= vector<std::shared_ptr<Bullet>>(0);
 	this->shields 				= vector<std::shared_ptr<Shield>>(0);
 	this->lastShotTicks			= 0;
-	this->currentTicks 			= global_fps;
-	this->lastEnemyShotTicks    = global_fps*3;		//two seconds of delay before the enemy starts to shoot
-	this->enemyShotsDelay		= enemy_shots_delay;
+	this->currentTicks 			= GLOBAL_FPS;
+	this->lastEnemyShotTicks    = GLOBAL_FPS*3;		//two seconds of delay before the enemy starts to shoot
+	this->enemyShotsDelay		= ENEMY_SHOTS_DELAY;
 	this->gamePhase				= INIT;
-	this->playerLifes    		= classic_player_lifes;
+	this->playerLifes    		= CLASSIC_PLAYER_LIFES;
 	this->enemyLanded 			= false;
 	this->playerShipDestroyed   = false;
 	this->score 				= 0;
@@ -886,15 +886,15 @@ void ClassicSpaceBattle::createEnemies()
 			EnemyShip* nextShip;
 			if(currentClass == CLASS_ONE)
 			{
-				nextShip = new ClassOneShip(x,y,this->gameBoard->getScaleRatio(),classic_push_distance*this->gameBoard->getScaleRatio(),classic_down_distance*this->gameBoard->getScaleRatio());
+				nextShip = new ClassOneShip(x,y,this->gameBoard->getScaleRatio(),CLASSIC_PUSH_DISTANCE*this->gameBoard->getScaleRatio(),CLASSIC_DOWN_DISTANCE*this->gameBoard->getScaleRatio());
 			}
 			else if(currentClass == CLASS_TWO)
 			{
-				nextShip = new ClassTwoShip(x,y,this->gameBoard->getScaleRatio(),classic_push_distance*this->gameBoard->getScaleRatio(),classic_down_distance*this->gameBoard->getScaleRatio());
+				nextShip = new ClassTwoShip(x,y,this->gameBoard->getScaleRatio(),CLASSIC_PUSH_DISTANCE*this->gameBoard->getScaleRatio(),CLASSIC_DOWN_DISTANCE*this->gameBoard->getScaleRatio());
 			}
 			else if(currentClass == CLASS_THREE)
 			{
-				nextShip = new ClassThreeShip(x,y,this->gameBoard->getScaleRatio(),classic_push_distance*this->gameBoard->getScaleRatio(),classic_down_distance*this->gameBoard->getScaleRatio());
+				nextShip = new ClassThreeShip(x,y,this->gameBoard->getScaleRatio(),CLASSIC_PUSH_DISTANCE*this->gameBoard->getScaleRatio(),CLASSIC_DOWN_DISTANCE*this->gameBoard->getScaleRatio());
 			}
 			else
 			{
@@ -912,7 +912,7 @@ void ClassicSpaceBattle::createEnemies()
 
 void ClassicSpaceBattle::createPlayer()
 {
-	std::shared_ptr<PlayerShip> player(new PlayerShip(this->gameBoard->getPlayerXSpawn(),this->gameBoard->getShipYCenter(),basic_player_ship_width*this->gameBoard->getScaleRatio(),basic_player_ship_height*this->gameBoard->getScaleRatio(),basic_player_ship_hp,basic_player_ship_damage,basic_player_ship_velocity*this->scale_ratio,basic_player_ship_cooldown,new string("Player One"),basic_player_texture_path));
+	std::shared_ptr<PlayerShip> player(new PlayerShip(this->gameBoard->getPlayerXSpawn(),this->gameBoard->getShipYCenter(),BASIC_PLAYER_SHIP_WIDTH*this->gameBoard->getScaleRatio(),BASIC_PLAYER_SHIP_HEIGHT*this->gameBoard->getScaleRatio(),BASIC_PLAYER_SHIP_HP,BASIC_PLAYER_SHIP_DAMAGE,BASIC_PLAYER_SHIP_VELOCITY*this->scale_ratio,BASIC_PLAYER_SHIP_COOLDOWN,new string("Player One"),BASIC_PLAYER_TEXTURE_PATH));
 	this->playerShip = player;
 }
 
@@ -962,7 +962,7 @@ void ClassicSpaceBattle::update()
 		//we increment the ticks
 		this->currentTicks++;
 		//Update contains all the logic of the game itself, like moving bullets, moving enemyships, etc.
-		if(this->currentTicks%classic_movement_ratio == 0)
+		if(this->currentTicks%CLASSIC_MOVEMENT_RATIO == 0)
 		{
 			moveEnemiesClassic();
 		}
@@ -1105,8 +1105,8 @@ void ClassicSpaceBattle::spawnEnemyBullet()
 void ClassicSpaceBattle::makeEnemyShoot(EnemyShip* ship)
 {
 	//Simple supportive method to complete "spawn enemy bullet" to help readability of code
-	int bullet_x = (ship->getX()+(ship->getWidth()/2)-((basic_player_bullet_width*this->scale_ratio)/2));
-	std::shared_ptr<Bullet> p1(new Bullet(bullet_x,ship->getY()+ship->getHeight(),basic_enemy_bullet_width*this->scale_ratio, basic_enemy_bullet_height*this->scale_ratio,ship->getAmmoDamage(),basic_enemy_bullet_velocity*this->scale_ratio,1));
+	int bullet_x = (ship->getX()+(ship->getWidth()/2)-((BASIC_PLAYER_BULLET_WIDTH*this->scale_ratio)/2));
+	std::shared_ptr<Bullet> p1(new Bullet(bullet_x,ship->getY()+ship->getHeight(),BASIC_ENEMY_BULLET_WIDTH*this->scale_ratio, BASIC_ENEMY_BULLET_HEIGHT*this->scale_ratio,ship->getAmmoDamage(),BASIC_ENEMY_BULLET_VELOCITY*this->scale_ratio,1));
 	this->bullets.push_back(p1);
 	this->lastEnemyShotTicks = this->currentTicks;
 	return;
@@ -1524,7 +1524,7 @@ bool ClassicSpaceBattle::enemiesDestroyed()
 */
 string ClassicSpaceBattle::getEnemyBasicBulletPath()
 {
-	return basic_bullet_texture_path;
+	return BASIC_BULLET_TEXTURE_PATH;
 }
 
 ClassicGamePhases ClassicSpaceBattle::getGamePhase()

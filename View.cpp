@@ -12,50 +12,50 @@ using namespace Entities;
 using namespace GameEntities;
 
 //--- Constant ---//
-const int enemies_frame 					= 2;
-const int enemies_frame_delay 				= 30;
-const int player_frame 						= 1;
-const int player_frame_delay  				= 1;
-const int player_bullet_frame   			= 1;
-const int player_bullet_frame_delay 		= 1;
-const int enemy_bullet_frame				= 4;
-const int enemy_bullet_frame_delay 			= 15;
+const int ENEMIES_FRAME 					= 2;
+const int ENEMIES_FRAME_DELAY 				= 30;
+const int PLAYER_FRAME 						= 1;
+const int PLAYER_FRAME_DELAY  				= 1;
+const int PLAYER_BULLET_FRAME   			= 1;
+const int PLAYER_BULLET_FRAME_DELAY 		= 1;
+const int ENEMY_BULLET_FRAME				= 4;
+const int ENEMY_BULLET_FRAME_DELAY 			= 15;
 
-const int enemy_bullets_type 				= 3;
+const int ENEMY_BULLETS_TYPE 				= 3;
 
-const int shield_frame						= 1;
-const int shield_frame_delay				= 1;
+const int SHIELD_FRAME						= 1;
+const int SHIELD_FRAME_DELAY				= 1;
 
-const string hud_font_path					="assets/font/space_invaders.ttf";
-const int hud_font_size						= 9;
-
-
-string green_bar_path 						="green_bar.png";
-
-const int type_one_explosion_width			= 12;
-const int type_one_explosion_height			= 8;
-const int type_one_explosion_frame 			= 2;
-const int type_one_explosion_frame_delay	= 15;
-string type_one_explosion_path				="type_one_explosion.png";
+const string HUD_FONT_PATH					="assets/font/space_invaders.ttf";
+const int HUD_FONT_SIZE						= 9;
 
 
-const int type_two_explosion_width			= 9;
-const int type_two_explosion_height			= 9;
-const int type_two_explosion_frame 			= 2;
-const int type_two_explosion_frame_delay	= 15;
-string type_two_explosion_path				="type_two_explosion.png";
+string GREEN_BAR_PATH 						="green_bar.png";
 
-const int type_three_explosion_width		= 9;
-const int type_three_explosion_height		= 9;
-const int type_three_explosion_frame 		= 2;
-const int type_three_explosion_frame_delay	= 15;
-string type_three_explosion_path			="type_three_explosion.png";
+const int TYPE_ONE_EXPLOSION_WIDTH			= 12;
+const int TYPE_ONE_EXPLOSION_HEIGHT			= 8;
+const int TYPE_ONE_EXPLOSION_FRAME 			= 2;
+const int TYPE_ONE_EXPLOSION_FRAME_DELAY	= 15;
+string TYPE_ONE_EXPLOSION_PATH				="type_one_explosion.png";
+
+
+const int TYPE_TWO_EXPLOSION_WIDTH			= 9;
+const int TYPE_TWO_EXPLOSION_HEIGHT			= 9;
+const int TYPE_TWO_EXPLOSION_FRAME 			= 2;
+const int TYPE_TWO_EXPLOSION_FRAME_DELAY	= 15;
+string TYPE_TWO_EXPLOSION_PATH				="type_two_explosion.png";
+
+const int TYPE_THREE_EXPLOSION_WIDTH		= 9;
+const int TYPE_THREE_EXPLOSION_HEIGHT		= 9;
+const int TYPE_THREE_EXPLOSION_FRAME 		= 2;
+const int TYPE_THREE_EXPLOSION_FRAME_DELAY	= 15;
+string TYPE_THREE_EXPLOSION_PATH			="type_three_explosion.png";
 
 //audio constants//
-string main_music_one_path					="fastinvader1.wav";
-string main_music_two_path					="fastinvader2.wav";
-string main_music_three_path				="fastinvader3.wav";
-string main_music_four_path					="fastinvader4.wav";
+string MAIN_MUSIC_ONE_PATH					="fastinvader1.wav";
+string MAIN_MUSIC_TWO_PATH					="fastinvader2.wav";
+string MAIN_MUSIC_THREE_PATH				="fastinvader3.wav";
+string MAIN_MUSIC_FOUR_PATH					="fastinvader4.wav";
 
 //--- 	Drawable 	---//
 Drawable::Drawable(string path, SDL_Renderer* renderer, SDL_PixelFormat* format,int frameNumber, int frameDelay)
@@ -410,13 +410,13 @@ bool ExplosionDrawable::draw()
 }
 
 //----- TypeOneExplosionDrawable ------//
-TypeOneExplosionDrawable::TypeOneExplosionDrawable(int x, int y, int width, int height,SDL_PixelFormat* format,SDL_Renderer* renderer) : ExplosionDrawable(x,y,width,height,type_one_explosion_path,format,renderer,type_one_explosion_frame,type_one_explosion_frame_delay) {}
+TypeOneExplosionDrawable::TypeOneExplosionDrawable(int x, int y, int width, int height,SDL_PixelFormat* format,SDL_Renderer* renderer) : ExplosionDrawable(x,y,width,height,TYPE_ONE_EXPLOSION_PATH,format,renderer,TYPE_ONE_EXPLOSION_FRAME,TYPE_ONE_EXPLOSION_FRAME_DELAY) {}
 
 //----- TypeOneExplosionDrawable ------//
-TypeTwoExplosionDrawable::TypeTwoExplosionDrawable(int x, int y, int width, int height,SDL_PixelFormat* format,SDL_Renderer* renderer) : ExplosionDrawable(x,y,width,height,type_two_explosion_path,format,renderer,type_two_explosion_frame,type_two_explosion_frame_delay) {}
+TypeTwoExplosionDrawable::TypeTwoExplosionDrawable(int x, int y, int width, int height,SDL_PixelFormat* format,SDL_Renderer* renderer) : ExplosionDrawable(x,y,width,height,TYPE_TWO_EXPLOSION_PATH,format,renderer,TYPE_TWO_EXPLOSION_FRAME,TYPE_TWO_EXPLOSION_FRAME_DELAY) {}
 
 //----- TypeOneExplosionDrawable ------//
-TypeThreeExplosionDrawable::TypeThreeExplosionDrawable(int x, int y, int width, int height,SDL_PixelFormat* format,SDL_Renderer* renderer) : ExplosionDrawable(x,y,width,height,type_three_explosion_path,format,renderer,type_three_explosion_frame,type_three_explosion_frame_delay) {}
+TypeThreeExplosionDrawable::TypeThreeExplosionDrawable(int x, int y, int width, int height,SDL_PixelFormat* format,SDL_Renderer* renderer) : ExplosionDrawable(x,y,width,height,TYPE_THREE_EXPLOSION_PATH,format,renderer,TYPE_THREE_EXPLOSION_FRAME,TYPE_THREE_EXPLOSION_FRAME_DELAY) {}
 
 
 //----  	AudioSource 	----//
@@ -517,7 +517,7 @@ bool ClassicSpaceBattleView::basicInit()
 				success = false;
 			}
 			//opening font
-			this->hudFont = TTF_OpenFont(hud_font_path.c_str(),hud_font_size*this->model->getGameBoard()->getScaleRatio());
+			this->hudFont = TTF_OpenFont(HUD_FONT_PATH.c_str(),HUD_FONT_SIZE*this->model->getGameBoard()->getScaleRatio());
 			if( this->hudFont == NULL)
 			{
 				printf("Failed to load font! SDL_ttf Error: %s\n",TTF_GetError() );
@@ -554,14 +554,14 @@ bool ClassicSpaceBattleView::spaceBattleInit(bool success)
 		for(int j = 0; j < this -> model->getEnemiesPerRow(); j++)
 		{
 			currEnemy = this->model->getEnemyPointerByRowAndColumn(i,j);
-			this->enemies.push_back(new DrawableObject(currEnemy,currEnemy->getTexturePath(),this->screenSurface->format,this->renderer,enemies_frame,enemies_frame_delay));
+			this->enemies.push_back(new DrawableObject(currEnemy,currEnemy->getTexturePath(),this->screenSurface->format,this->renderer,ENEMIES_FRAME,ENEMIES_FRAME_DELAY));
 			
 		}
 	}
 	currEnemy = NULL;
 
 	//--Player Ship--//
-	this->player = new DrawableObject(this->model->getPlayerShipSharedPointer(),this->model->getPlayerShip()->getTexturePath(),this->screenSurface->format,this->renderer,player_frame,player_frame_delay);
+	this->player = new DrawableObject(this->model->getPlayerShipSharedPointer(),this->model->getPlayerShip()->getTexturePath(),this->screenSurface->format,this->renderer,PLAYER_FRAME,PLAYER_FRAME_DELAY);
 	
 	//--Other Entities--//
 	this->shields.resize(this->model->getNumberOfShields(),vector<std::pair<DrawableObject*,DrawableObject*>>(0));
@@ -597,8 +597,8 @@ void ClassicSpaceBattleView::initializeSingleShield(int index)
 				continue;
 			}
 			// printf("%d,%d\n",i,j);
-			DrawableObject* intactDrawable = new DrawableObject(currentShield->getShieldUnitByIndex(i,j),currentShield->getShieldUnitByIndex(i,j)->getIntactTexturePath(),this->screenSurface->format,this->renderer,shield_frame,shield_frame_delay);
-			DrawableObject* brokenDrawable = new DrawableObject(currentShield->getShieldUnitByIndex(i,j),currentShield->getShieldUnitByIndex(i,j)->getBrokenTexturePath(),this->screenSurface->format,this->renderer,shield_frame,shield_frame_delay);
+			DrawableObject* intactDrawable = new DrawableObject(currentShield->getShieldUnitByIndex(i,j),currentShield->getShieldUnitByIndex(i,j)->getIntactTexturePath(),this->screenSurface->format,this->renderer,SHIELD_FRAME,SHIELD_FRAME_DELAY);
+			DrawableObject* brokenDrawable = new DrawableObject(currentShield->getShieldUnitByIndex(i,j),currentShield->getShieldUnitByIndex(i,j)->getBrokenTexturePath(),this->screenSurface->format,this->renderer,SHIELD_FRAME,SHIELD_FRAME_DELAY);
 			std::pair<DrawableObject*,DrawableObject*> currentPair(intactDrawable,brokenDrawable);
 			this->shields[index].push_back(currentPair);
 		}
@@ -608,10 +608,10 @@ void ClassicSpaceBattleView::initializeSingleShield(int index)
 bool ClassicSpaceBattleView::audioInit(bool result)
 {
 	//main music
-	this->mainMusic.push(new AudioSource(main_music_one_path));
-	this->mainMusic.push(new AudioSource(main_music_two_path));
-	this->mainMusic.push(new AudioSource(main_music_three_path));
-	this->mainMusic.push(new AudioSource(main_music_four_path));
+	this->mainMusic.push(new AudioSource(MAIN_MUSIC_ONE_PATH));
+	this->mainMusic.push(new AudioSource(MAIN_MUSIC_TWO_PATH));
+	this->mainMusic.push(new AudioSource(MAIN_MUSIC_THREE_PATH));
+	this->mainMusic.push(new AudioSource(MAIN_MUSIC_FOUR_PATH));
 	result = true;
 }
 
@@ -628,7 +628,7 @@ void ClassicSpaceBattleView::createHudElements()
 	this->fixedDrawableElements.push_back(new DrawableText(this->hudFont,color,"SCORE < 2 >",this->model->getGameBoard()->getScore2X(),this->model->getGameBoard()->getScoreY(),this->screenSurface->format,this->renderer));
 
 	//green line
-	this->fixedDrawableElements.push_back(new PureDrawable(0,this->model->getGameBoard()->getLowerHud(),this->model->getGameBoard()->getWidth(),this->model->getGameBoard()->getScaleRatio()*1,green_bar_path,this->screenSurface->format,this->renderer,1,1));
+	this->fixedDrawableElements.push_back(new PureDrawable(0,this->model->getGameBoard()->getLowerHud(),this->model->getGameBoard()->getWidth(),this->model->getGameBoard()->getScaleRatio()*1,GREEN_BAR_PATH,this->screenSurface->format,this->renderer,1,1));
 	//credit texty
 	this->fixedDrawableElements.push_back(new DrawableText(this->hudFont,color,"CREDIT   00",this->model->getGameBoard()->getCreditX(),this->model->getGameBoard()->getCreditY(),this->screenSurface->format,this->renderer));
 	
@@ -666,7 +666,7 @@ void ClassicSpaceBattleView::close()
 void ClassicSpaceBattleView::addNewPlayerBullet()
 {
 
-	this->bullets.push_back(new DrawableObject(this->model->getLastBullet(),this->model->getPlayerShip()->getBulletTexturePath(),this->screenSurface->format,this->renderer,player_bullet_frame,player_bullet_frame_delay));
+	this->bullets.push_back(new DrawableObject(this->model->getLastBullet(),this->model->getPlayerShip()->getBulletTexturePath(),this->screenSurface->format,this->renderer,PLAYER_BULLET_FRAME,PLAYER_BULLET_FRAME_DELAY));
 }
 
 
@@ -804,8 +804,8 @@ void ClassicSpaceBattleView::renderBullets()
 													bullet_texture_path,
 													this->screenSurface->format,
 													this->renderer,
-													enemy_bullet_frame,
-													enemy_bullet_frame_delay));
+													ENEMY_BULLET_FRAME,
+													ENEMY_BULLET_FRAME_DELAY));
 
 		
 	}
@@ -917,15 +917,15 @@ void ClassicSpaceBattleView::addExplosion(int x, int y)
 	//all the explosion are adjusted to have the center in the x,y coordinate
 	if(y <= this->model->getGameBoard()->getSpecialShipY() && y >= this->model->getGameBoard()->getUpperHud())
 	{
-		this->explosions.push(new TypeThreeExplosionDrawable((x-type_three_explosion_width*scale_ratio/2),y,type_three_explosion_width*scale_ratio,type_three_explosion_height*scale_ratio,this->screenSurface->format,this->renderer));
+		this->explosions.push(new TypeThreeExplosionDrawable((x-TYPE_THREE_EXPLOSION_WIDTH*scale_ratio/2),y,TYPE_THREE_EXPLOSION_WIDTH*scale_ratio,TYPE_THREE_EXPLOSION_HEIGHT*scale_ratio,this->screenSurface->format,this->renderer));
 	}
 	else if(y >= this->model->getGameBoard()->getShipYCenter() && y <= this->model->getGameBoard()->getLowerHud())
 	{
-		this->explosions.push(new TypeTwoExplosionDrawable((x-type_two_explosion_width*scale_ratio/2),y,type_two_explosion_width*scale_ratio,type_two_explosion_height*scale_ratio,this->screenSurface->format,this->renderer));
+		this->explosions.push(new TypeTwoExplosionDrawable((x-TYPE_TWO_EXPLOSION_WIDTH*scale_ratio/2),y,TYPE_TWO_EXPLOSION_WIDTH*scale_ratio,TYPE_TWO_EXPLOSION_HEIGHT*scale_ratio,this->screenSurface->format,this->renderer));
 	}
 	else
 	{
-		this->explosions.push(new TypeOneExplosionDrawable((x-type_one_explosion_width*scale_ratio/2),y,type_one_explosion_width*scale_ratio,type_one_explosion_height*scale_ratio,this->screenSurface->format,this->renderer));
+		this->explosions.push(new TypeOneExplosionDrawable((x-TYPE_ONE_EXPLOSION_WIDTH*scale_ratio/2),y,TYPE_ONE_EXPLOSION_WIDTH*scale_ratio,TYPE_ONE_EXPLOSION_HEIGHT*scale_ratio,this->screenSurface->format,this->renderer));
 	}
 	return;
 }
@@ -946,7 +946,7 @@ string ClassicSpaceBattleView::generateScoreString()
 
 string ClassicSpaceBattleView::generateEnemyBulletSuffix()
 {
-	int number = (std::rand() % enemy_bullets_type);
+	int number = (std::rand() % ENEMY_BULLETS_TYPE);
 	return std::to_string(number + 1);
 	
 }

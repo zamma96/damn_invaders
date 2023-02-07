@@ -13,10 +13,10 @@ using namespace Controller;
 using namespace Utilities;
 
 //---- Global Variables ----//
-const int game_scale_ratio 			= 4;
-const int frame_rate 				= 60;
-const int screen_ticks_per_frame 	= 1000/frame_rate;	
-const vector<EnemyShipClasses> classic_ship_classes{CLASS_ONE,CLASS_ONE,CLASS_TWO,CLASS_TWO,CLASS_THREE};
+const int GAME_SCALE_RATIO 			= 4;
+const int FRAME_RATE 				= 60;
+const int SCREEN_TICKS_PER_FRAME 	= 1000/FRAME_RATE;	
+const vector<EnemyShipClasses> CLASSIC_SHIP_CLASSES{CLASS_ONE,CLASS_ONE,CLASS_TWO,CLASS_TWO,CLASS_THREE};
 
 ClassicSpaceBattleController::ClassicSpaceBattleController(int scale_ratio)
 {
@@ -34,7 +34,7 @@ void ClassicSpaceBattleController::init(int scale_ratio)
 
 	
 	
-	this->model = new ClassicSpaceBattle(classic_ship_classes,scale_ratio = scale_ratio	);
+	this->model = new ClassicSpaceBattle(CLASSIC_SHIP_CLASSES,scale_ratio = scale_ratio	);
 
 	//-- View Creation --//
 	this->view = new ClassicSpaceBattleView(model);
@@ -114,7 +114,7 @@ bool ClassicSpaceBattleController::restartGame(int scale_ratio)
 
 	bool success = true;
 	ClassicSpaceBattle* temp = this->model;
-	this->model = new ClassicSpaceBattle(classic_ship_classes,scale_ratio = scale_ratio	);
+	this->model = new ClassicSpaceBattle(CLASSIC_SHIP_CLASSES,scale_ratio = scale_ratio	);
 	this->gameOver = false;
 	success = this->view->changeModelAndRestart(this->model);
 	return success;
@@ -151,7 +151,7 @@ void ClassicSpaceBattleController::processInput()
 int main(int argc, char const *argv[])
 {
 
-	ClassicSpaceBattleController* controller = new ClassicSpaceBattleController(game_scale_ratio);
+	ClassicSpaceBattleController* controller = new ClassicSpaceBattleController(GAME_SCALE_RATIO);
 	bool quit = false;
 
 	SDL_Event e;
@@ -192,15 +192,15 @@ int main(int argc, char const *argv[])
 			{
 				//if the game is over
 				controller->setGameOver(true);
-				controller->restartGame(game_scale_ratio);
+				controller->restartGame(GAME_SCALE_RATIO);
 			}
 			countedFrames++;
 
 			int frameTicks = capTimer.getTicks();
-			if( frameTicks < screen_ticks_per_frame )
+			if( frameTicks < SCREEN_TICKS_PER_FRAME )
 			{
 				//Wait remaining time
-                    SDL_Delay( screen_ticks_per_frame - frameTicks );
+                    SDL_Delay( SCREEN_TICKS_PER_FRAME - frameTicks );
 			}
 
 
