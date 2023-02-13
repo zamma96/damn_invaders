@@ -57,6 +57,7 @@ string MAIN_MUSIC_ONE_PATH					="fastinvader1.wav";
 string MAIN_MUSIC_TWO_PATH					="fastinvader2.wav";
 string MAIN_MUSIC_THREE_PATH				="fastinvader3.wav";
 string MAIN_MUSIC_FOUR_PATH					="fastinvader4.wav";
+string EXPLOSION_SOUND_PATH	 				="explosion.wav";
 
 //--- 	Drawable 	---//
 Drawable::Drawable(string path, SDL_Renderer* renderer, SDL_PixelFormat* format,int frameNumber, int frameDelay)
@@ -429,6 +430,7 @@ AudioSource::AudioSource(string path)
 AudioSource::~AudioSource()
 {
 	this->free();
+	this->sound = NULL;
 }
 
 void AudioSource::loadMedia()
@@ -615,6 +617,9 @@ bool ClassicSpaceBattleView::audioInit(bool result)
 	this->mainMusic.push(new AudioSource(MAIN_MUSIC_TWO_PATH));
 	this->mainMusic.push(new AudioSource(MAIN_MUSIC_THREE_PATH));
 	this->mainMusic.push(new AudioSource(MAIN_MUSIC_FOUR_PATH));
+
+	this->explosion = new AudioSource(EXPLOSION_SOUND_PATH);
+
 	result = true;
 	return result;
 }
@@ -720,6 +725,7 @@ bool ClassicSpaceBattleView::changeModelAndRestart(ClassicSpaceBattle* model)
 		delete temp;
 
 	}
+	delete this->explosion;
 	this->fixedDrawableElements.clear();
 	this->player = nullptr;
 	this->model = model;
@@ -949,6 +955,9 @@ void ClassicSpaceBattleView::addExplosion(int x, int y)
 	{
 		this->explosions.push(new TypeOneExplosionDrawable((x-TYPE_ONE_EXPLOSION_WIDTH*scale_ratio/2),y,TYPE_ONE_EXPLOSION_WIDTH*scale_ratio,TYPE_ONE_EXPLOSION_HEIGHT*scale_ratio,this->screenSurface->format,this->renderer));
 	}
+
+	//when we add an explosion, we must also reproduce the sound effect related
+	this->explosion->play();
 	return;
 }
 
