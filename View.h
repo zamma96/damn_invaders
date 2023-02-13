@@ -205,9 +205,12 @@ namespace ViewEntities
 
 			//---SOUND----//
 			queue<AudioSource*> mainMusic;
-			AudioSource* explosion;
+			AudioSource* playerShipExplosionSFX;
+			AudioSource* enemyShipExplosionSFX;
+			AudioSource* projectileFiredSFX;
 			int framesSinceLastAudio;
 			int currentFrameTreshold;
+			int lifesLastFrame;
 
 
 			int lastScore;

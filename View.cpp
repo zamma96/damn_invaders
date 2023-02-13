@@ -57,7 +57,9 @@ string MAIN_MUSIC_ONE_PATH					="fastinvader1.wav";
 string MAIN_MUSIC_TWO_PATH					="fastinvader2.wav";
 string MAIN_MUSIC_THREE_PATH				="fastinvader3.wav";
 string MAIN_MUSIC_FOUR_PATH					="fastinvader4.wav";
-string EXPLOSION_SOUND_PATH	 				="explosion.wav";
+string PLAYER_EXPLOSION_SOUND_PATH			="explosion.wav";
+string PROJECTILE_FIRED_PATH				="shoot.wav";
+string ENEMY_SHIP_EXPLOSION_PATH			="invaderkilled.wav";
 
 //--- 	Drawable 	---//
 Drawable::Drawable(string path, SDL_Renderer* renderer, SDL_PixelFormat* format,int frameNumber, int frameDelay)
@@ -463,6 +465,7 @@ ClassicSpaceBattleView::ClassicSpaceBattleView(ClassicSpaceBattle* spaceBattle)
 	this->player = nullptr;
 	this->lastScore = 0;
 	this->lifes = this->model->getPlayerLifes();
+	this->lifesLastFrame = this->lifes;
 	this->framesSinceLastAudio = 0;
 	this->currentFrameTreshold = this->model->getEnemiesRemaining();
 	int hudElements = HudLiveElements::NR_ELEMENTS;
@@ -618,8 +621,9 @@ bool ClassicSpaceBattleView::audioInit(bool result)
 	this->mainMusic.push(new AudioSource(MAIN_MUSIC_THREE_PATH));
 	this->mainMusic.push(new AudioSource(MAIN_MUSIC_FOUR_PATH));
 
-	this->explosion = new AudioSource(EXPLOSION_SOUND_PATH);
-
+	this->playerShipExplosionSFX = new AudioSource(PLAYER_EXPLOSION_SOUND_PATH);
+	this->enemyShipExplosionSFX = new AudioSource(ENEMY_SHIP_EXPLOSION_PATH);
+	this->projectileFiredSFX = new AudioSource(PROJECTILE_FIRED_PATH);
 	result = true;
 	return result;
 }
@@ -676,6 +680,8 @@ void ClassicSpaceBattleView::addNewPlayerBullet()
 {
 
 	this->bullets.push_back(new DrawableObject(this->model->getLastBullet(),this->model->getPlayerShip()->getBulletTexturePath(),this->screenSurface->format,this->renderer,PLAYER_BULLET_FRAME,PLAYER_BULLET_FRAME_DELAY));
+	//when we add a player bullet, we also play the sound
+	this->projectileFiredSFX->play();
 }
 
 
@@ -725,7 +731,9 @@ bool ClassicSpaceBattleView::changeModelAndRestart(ClassicSpaceBattle* model)
 		delete temp;
 
 	}
-	delete this->explosion;
+	delete this->playerShipExplosionSFX;
+	delete this->enemyShipExplosionSFX;
+	delete this->projectileFiredSFX;
 	this->fixedDrawableElements.clear();
 	this->player = nullptr;
 	this->model = model;
@@ -932,6 +940,12 @@ void ClassicSpaceBattleView::audioUpdate()
 		this->framesSinceLastAudio ++;
 	}
 
+	if(this->lifesLastFrame > this->lifes)
+	{
+		//if the player died
+		this->playerShipExplosionSFX->play();
+		this->lifesLastFrame = this->lifes;
+	}
 }
 
 void ClassicSpaceBattleView::addExplosion(int x, int y)
@@ -953,11 +967,12 @@ void ClassicSpaceBattleView::addExplosion(int x, int y)
 	}
 	else
 	{
+		//if we are in the type one explosion, it means that we must play also the enemy ship explosion SFX
 		this->explosions.push(new TypeOneExplosionDrawable((x-TYPE_ONE_EXPLOSION_WIDTH*scale_ratio/2),y,TYPE_ONE_EXPLOSION_WIDTH*scale_ratio,TYPE_ONE_EXPLOSION_HEIGHT*scale_ratio,this->screenSurface->format,this->renderer));
+		this->enemyShipExplosionSFX->play();
 	}
 
-	//when we add an explosion, we must also reproduce the sound effect related
-	this->explosion->play();
+	
 	return;
 }
 
