@@ -79,6 +79,7 @@ void Drawable::free()
 		SDL_DestroyTexture(this->texture);
 		this->texture = NULL;
 	}
+	
 }
 
 SDL_Surface* Drawable::loadSurface(std::string path )
@@ -468,11 +469,7 @@ ClassicSpaceBattleView::ClassicSpaceBattleView(ClassicSpaceBattle* spaceBattle)
 	this->lifesLastFrame = this->lifes;
 	this->framesSinceLastAudio = 0;
 	this->currentFrameTreshold = this->model->getEnemiesRemaining();
-	int hudElements = HudLiveElements::NR_ELEMENTS;
-	for(int i = 0; i < hudElements ; i++)
-	{
-		this->changingText.push_back(nullptr);
-	}
+
 	basicInit();
 
 }
@@ -489,7 +486,7 @@ bool ClassicSpaceBattleView::basicInit()
 {
 	bool success = true;
 
-	std::srand(std::time(nullptr));
+	std::srand((int)std::time(nullptr));
 
 	//Window, Render Init
 	//Initialize SDL
@@ -562,7 +559,8 @@ bool ClassicSpaceBattleView::spaceBattleInit(bool success)
 		for(int j = 0; j < this -> model->getEnemiesPerRow(); j++)
 		{
 			currEnemy = this->model->getEnemyPointerByRowAndColumn(i,j);
-			this->enemies.push_back(new DrawableObject(currEnemy,currEnemy->getTexturePath(),this->screenSurface->format,this->renderer,ENEMIES_FRAME,ENEMIES_FRAME_DELAY));
+			std::shared_ptr<DrawableObject> currPointer(new DrawableObject(currEnemy, currEnemy->getTexturePath(), this->screenSurface->format, this->renderer, ENEMIES_FRAME, ENEMIES_FRAME_DELAY));
+			this->enemies.push_back(currPointer);
 			
 		}
 	}
@@ -572,7 +570,7 @@ bool ClassicSpaceBattleView::spaceBattleInit(bool success)
 	this->player = new DrawableObject(this->model->getPlayerShipSharedPointer(),this->model->getPlayerShip()->getTexturePath(),this->screenSurface->format,this->renderer,PLAYER_FRAME,PLAYER_FRAME_DELAY);
 	
 	//--Other Entities--//
-	this->shields.resize(this->model->getNumberOfShields(),vector<std::pair<DrawableObject*,DrawableObject*>>(0));
+	this->shields.resize(this->model->getNumberOfShields(),vector<std::pair<std::shared_ptr<DrawableObject>, std::shared_ptr<DrawableObject>>>(0));
 	createShields();
 	createHudElements();
 	audioInit(success);
@@ -600,14 +598,14 @@ void ClassicSpaceBattleView::initializeSingleShield(int index)
 		{
 			if(i == 0 && ( j == 3 || j == 4 || j==5 ) )
 			{
-				std::pair<DrawableObject*,DrawableObject*> currentPair(NULL,NULL);
+				std::pair<std::shared_ptr<DrawableObject>, std::shared_ptr<DrawableObject>> currentPair(NULL,NULL);
 				this->shields[index].push_back(currentPair);
 				continue;
 			}
 			// printf("%d,%d\n",i,j);
-			DrawableObject* intactDrawable = new DrawableObject(currentShield->getShieldUnitByIndex(i,j),currentShield->getShieldUnitByIndex(i,j)->getIntactTexturePath(),this->screenSurface->format,this->renderer,SHIELD_FRAME,SHIELD_FRAME_DELAY);
-			DrawableObject* brokenDrawable = new DrawableObject(currentShield->getShieldUnitByIndex(i,j),currentShield->getShieldUnitByIndex(i,j)->getBrokenTexturePath(),this->screenSurface->format,this->renderer,SHIELD_FRAME,SHIELD_FRAME_DELAY);
-			std::pair<DrawableObject*,DrawableObject*> currentPair(intactDrawable,brokenDrawable);
+			std::shared_ptr<DrawableObject> intactDrawable(new DrawableObject(currentShield->getShieldUnitByIndex(i,j),currentShield->getShieldUnitByIndex(i,j)->getIntactTexturePath(),this->screenSurface->format,this->renderer,SHIELD_FRAME,SHIELD_FRAME_DELAY));
+			std::shared_ptr<DrawableObject> brokenDrawable(new DrawableObject(currentShield->getShieldUnitByIndex(i,j),currentShield->getShieldUnitByIndex(i,j)->getBrokenTexturePath(),this->screenSurface->format,this->renderer,SHIELD_FRAME,SHIELD_FRAME_DELAY));
+			std::pair<std::shared_ptr<DrawableObject>, std::shared_ptr<DrawableObject>> currentPair(intactDrawable,brokenDrawable);
 			this->shields[index].push_back(currentPair);
 		}
 	}
@@ -616,10 +614,15 @@ void ClassicSpaceBattleView::initializeSingleShield(int index)
 bool ClassicSpaceBattleView::audioInit(bool result)
 {
 	//main music
-	this->mainMusic.push(new AudioSource(MAIN_MUSIC_ONE_PATH));
-	this->mainMusic.push(new AudioSource(MAIN_MUSIC_TWO_PATH));
-	this->mainMusic.push(new AudioSource(MAIN_MUSIC_THREE_PATH));
-	this->mainMusic.push(new AudioSource(MAIN_MUSIC_FOUR_PATH));
+	std::shared_ptr<AudioSource> soundOne(new AudioSource(MAIN_MUSIC_ONE_PATH));
+	this->mainMusic.push(soundOne);
+	std::shared_ptr<AudioSource> soundTwo(new AudioSource(MAIN_MUSIC_TWO_PATH));
+	this->mainMusic.push(soundTwo);
+	std::shared_ptr<AudioSource> soundThree(new AudioSource(MAIN_MUSIC_THREE_PATH));
+	this->mainMusic.push(soundThree);
+	std::shared_ptr<AudioSource> soundFour(new AudioSource(MAIN_MUSIC_FOUR_PATH));
+	this->mainMusic.push(soundFour);
+
 
 	this->playerShipExplosionSFX = new AudioSource(PLAYER_EXPLOSION_SOUND_PATH);
 	this->enemyShipExplosionSFX = new AudioSource(ENEMY_SHIP_EXPLOSION_PATH);
@@ -634,30 +637,44 @@ void ClassicSpaceBattleView::createHudElements()
 	SDL_Color color = {255,255,255};
 	
 	//score text
-	this->fixedDrawableElements.push_back(new DrawableText(this->hudFont,color,"SCORE < 1 >",this->model->getGameBoard()->getScoreX(),this->model->getGameBoard()->getScoreY(),this->screenSurface->format,this->renderer));
+	std::shared_ptr<Drawable> scorePointer(new DrawableText(this->hudFont, color, "SCORE < 1 >", this->model->getGameBoard()->getScoreX(), this->model->getGameBoard()->getScoreY(), this->screenSurface->format, this->renderer));
+	this->fixedDrawableElements.push_back(scorePointer);
 	//hi-score text
-	this->fixedDrawableElements.push_back(new DrawableText(this->hudFont,color,"HI - SCORE",this->model->getGameBoard()->getHighScoreX(),this->model->getGameBoard()->getScoreY(),this->screenSurface->format,this->renderer));
+	std::shared_ptr<Drawable> hiScorePointer(new DrawableText(this->hudFont, color, "HI - SCORE", this->model->getGameBoard()->getHighScoreX(), this->model->getGameBoard()->getScoreY(), this->screenSurface->format, this->renderer));
+	this->fixedDrawableElements.push_back(hiScorePointer);
 	//score 2 text
-	this->fixedDrawableElements.push_back(new DrawableText(this->hudFont,color,"SCORE < 2 >",this->model->getGameBoard()->getScore2X(),this->model->getGameBoard()->getScoreY(),this->screenSurface->format,this->renderer));
+	std::shared_ptr<Drawable> score2Pointer(new DrawableText(this->hudFont, color, "SCORE < 2 >", this->model->getGameBoard()->getScore2X(), this->model->getGameBoard()->getScoreY(), this->screenSurface->format, this->renderer));
+	this->fixedDrawableElements.push_back(score2Pointer);
 
 	//green line
-	this->fixedDrawableElements.push_back(new PureDrawable(0,this->model->getGameBoard()->getLowerHud(),this->model->getGameBoard()->getWidth(),this->model->getGameBoard()->getScaleRatio()*1,GREEN_BAR_PATH,this->screenSurface->format,this->renderer,1,1));
-	//credit texty
-	this->fixedDrawableElements.push_back(new DrawableText(this->hudFont,color,"CREDIT   00",this->model->getGameBoard()->getCreditX(),this->model->getGameBoard()->getCreditY(),this->screenSurface->format,this->renderer));
+	std::shared_ptr<Drawable> greenLinePointer(new PureDrawable(0, this->model->getGameBoard()->getLowerHud(), this->model->getGameBoard()->getWidth(), this->model->getGameBoard()->getScaleRatio() * 1, GREEN_BAR_PATH, this->screenSurface->format, this->renderer, 1, 1));
+	this->fixedDrawableElements.push_back(greenLinePointer);
+	
+	//credit text
+	std::shared_ptr<Drawable> creditTextPointer(new DrawableText(this->hudFont, color, "CREDIT   00", this->model->getGameBoard()->getCreditX(), this->model->getGameBoard()->getCreditY(), this->screenSurface->format, this->renderer));
+	this->fixedDrawableElements.push_back(creditTextPointer);
 	
 	//fake hiscore points
-	this->fixedDrawableElements.push_back(new DrawableText(this->hudFont,color,"0000",this->model->getGameBoard()->getHighScoreNumberX(),this->model->getGameBoard()->getScoreNumberY(),this->screenSurface->format,this->renderer));
+	std::shared_ptr<Drawable> hiScorePointsPointer(new DrawableText(this->hudFont, color, "0000", this->model->getGameBoard()->getHighScoreNumberX(), this->model->getGameBoard()->getScoreNumberY(), this->screenSurface->format, this->renderer));
+	this->fixedDrawableElements.push_back(hiScorePointsPointer);
 
 	//points score and lifes text
-	this->changingText[SCORE] = new DrawableText(this->hudFont,color,"0000",this->model->getGameBoard()->getScoreNumberX(),this->model->getGameBoard()->getScoreNumberY(),this->screenSurface->format,this->renderer);
-	this->changingText[LIFES] = new DrawableText(this->hudFont,color,std::to_string(this->lifes),this->model->getGameBoard()->getLifesNumberX(),this->model->getGameBoard()->getLifesY(),this->screenSurface->format,this->renderer);	
+	int hudElements = HudLiveElements::NR_ELEMENTS;
+	for (int i = 0; i < hudElements; i++)
+	{
+		this->changingText.push_back(nullptr);
+	}
+	std::shared_ptr<DrawableText> score(new DrawableText(this->hudFont, color, "0000", this->model->getGameBoard()->getScoreNumberX(), this->model->getGameBoard()->getScoreNumberY(), this->screenSurface->format, this->renderer));
+	std::shared_ptr<DrawableText> lifes(new DrawableText(this->hudFont, color, std::to_string(this->lifes), this->model->getGameBoard()->getLifesNumberX(), this->model->getGameBoard()->getLifesY(), this->screenSurface->format, this->renderer));
+	this->changingText[SCORE] = score;
+	this->changingText[LIFES] = lifes;	
 
 	//ship sprites
-	for(int i = 1; i < this->lifes; i++)
+	for (int i = 1; i < this->lifes; i++)
 	{
-		this->lifesShips.push_back(new PureDrawable(this->model->getGameBoard()->getLifesX()+((i-1)*(this->model->getPlayerShip()->getWidth()+2*this->model->getGameBoard()->getScaleRatio())),this->model->getGameBoard()->getLifesY(),this->model->getPlayerShip()->getWidth(),this->model->getPlayerShip()->getHeight(),this->model->getPlayerShip()->getTexturePath(),this->screenSurface->format,this->renderer,1,1));
+		std::shared_ptr<PureDrawable> currShip(new PureDrawable(this->model->getGameBoard()->getLifesX() + ((i - 1) * (this->model->getPlayerShip()->getWidth() + 2 * this->model->getGameBoard()->getScaleRatio())), this->model->getGameBoard()->getLifesY(), this->model->getPlayerShip()->getWidth(), this->model->getPlayerShip()->getHeight(), this->model->getPlayerShip()->getTexturePath(), this->screenSurface->format, this->renderer, 1, 1));
+		this->lifesShips.push_back(currShip);
 	}
-
 }
 
 void ClassicSpaceBattleView::close()
@@ -678,8 +695,8 @@ void ClassicSpaceBattleView::close()
 
 void ClassicSpaceBattleView::addNewPlayerBullet()
 {
-
-	this->bullets.push_back(new DrawableObject(this->model->getLastBullet(),this->model->getPlayerShip()->getBulletTexturePath(),this->screenSurface->format,this->renderer,PLAYER_BULLET_FRAME,PLAYER_BULLET_FRAME_DELAY));
+	std::shared_ptr<DrawableObject> currBullet(new DrawableObject(this->model->getLastBullet(), this->model->getPlayerShip()->getBulletTexturePath(), this->screenSurface->format, this->renderer, PLAYER_BULLET_FRAME, PLAYER_BULLET_FRAME_DELAY));
+	this->bullets.push_back(currBullet);
 	//when we add a player bullet, we also play the sound
 	this->projectileFiredSFX->play();
 }
@@ -711,7 +728,12 @@ void ClassicSpaceBattleView::update()
 
 bool ClassicSpaceBattleView::changeModelAndRestart(ClassicSpaceBattle* model)
 {
+
 	//cleaning my entities
+	/* In the first implementation enemies, entities, bullets... were vectors of pointers. 
+	*  When using clear, we were destroying the pointers but not the objects. Then we switched to 
+	*  shared_ptr, in this way when nobody is holding the pointer, the object itself is destroyed.
+	*/
 	this->enemies.clear();
 	this->entities.clear();
 	this->bullets.clear();
@@ -750,13 +772,11 @@ void ClassicSpaceBattleView::renderEnemies()
 	{
 		if(!this->enemies.at(i)->draw())
 		{
-			//not only destroy it, but also add an explosion animation
-			//addExplosion(this->enemies.at(i)->getObjectX(),this->enemies.at(i)->getObjectY());
+			//We don't need new explosions since we already have the bullet exploding
+			
 			//if the object I'm trying to draw doesn't exist anymore
 			//we should destroy it
-			delete this->enemies.at(i);
 			this->enemies.erase(enemies.begin() + i);
-			
 
 		}
 		
@@ -779,7 +799,7 @@ void ClassicSpaceBattleView::renderEntities()
 		if(!this->entities.at(i)->draw())
 		{
 			// printf("deleting entity in VIEW\n");
-			delete this->entities.at(i);
+			//delete this->entities.at(i); no need with shared_ptrs
 			this->entities.erase(entities.begin() + i);
 		}
 	}
@@ -795,7 +815,7 @@ void ClassicSpaceBattleView::renderShields()
 		for(int j = 0; j < this->shields[i].size() ; j++)
 		{
 
-			int row = std::floor(j/columns);
+			int row = (int)std::floor(j/columns);
 			int column = j%columns;
 			if(row == 0 && ( column == 3 || column == 4 || column==5)) //0,3;0,4;0,5 are not part of the shield
 			{
@@ -819,19 +839,19 @@ void ClassicSpaceBattleView::renderShields()
 void ClassicSpaceBattleView::renderBullets()
 {
 
-	// printf("bullets are %d\n, in reality %d\n",this->bullets.size(),this->model->getBulletsSize());
 	//are there new bullets in the screen?
 	if(this->bullets.size() < this->model->getBulletsSize())
 	{
 		//if there are new bullets, we add it
 		//(this methods works when at most one bullet per frame is added. but this is an intended behaviour)
 		string bullet_texture_path = this->model->getEnemyBasicBulletPath() + generateEnemyBulletSuffix() +".png";
-		this->bullets.push_back(new DrawableObject(this->model->getLastBullet(),
-													bullet_texture_path,
-													this->screenSurface->format,
-													this->renderer,
-													ENEMY_BULLET_FRAME,
-													ENEMY_BULLET_FRAME_DELAY));
+		std::shared_ptr<DrawableObject> currBullet(new DrawableObject(this->model->getLastBullet(),
+			bullet_texture_path,
+			this->screenSurface->format,
+			this->renderer,
+			ENEMY_BULLET_FRAME,
+			ENEMY_BULLET_FRAME_DELAY));
+		this->bullets.push_back(currBullet);
 
 		
 	}
@@ -842,7 +862,7 @@ void ClassicSpaceBattleView::renderBullets()
 			//if we delete a bullet, we must add an explosion
 			addExplosion(this->bullets.at(i)->getObjectX(),this->bullets.at(i)->getObjectY());
 			// printf("deleting entity in VIEW\n");
-			delete this->bullets.at(i);
+			//delete this->bullets.erase(i); with shared pointer is no needed anymore
 			this->bullets.erase(bullets.begin() + i);
 		}
 	}
@@ -900,9 +920,9 @@ void ClassicSpaceBattleView::renderHUD()
 		this->changingText[LIFES]->changeText(std::to_string(this->model->getPlayerLifes()));
 		if(this->lifes>1)
 		{
-			PureDrawable* temp = this->lifesShips.back();
+			//PureDrawable* temp = this->lifesShips.back();
 			this->lifesShips.pop_back();
-			delete temp;
+			//delete temp;
 			// this->lifesShips.erase(this->lifesShips.end());
 		}
 		this->lifes = this->model->getPlayerLifes();
@@ -929,7 +949,7 @@ void ClassicSpaceBattleView::audioUpdate()
 	this->currentFrameTreshold = this->model->getEnemiesRemaining();
 	if(this->framesSinceLastAudio >= this->currentFrameTreshold)
 	{
-		AudioSource* currAudio = this->mainMusic.front();
+		std::shared_ptr<AudioSource> currAudio = this->mainMusic.front();
 		this->mainMusic.pop();
 		this->mainMusic.push(currAudio);
 		currAudio->play();

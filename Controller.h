@@ -17,27 +17,31 @@ namespace Controller
 		public:
 			//BasicController();
 			//virtual ~BasicController() = 0;
-			//this method is used to given control to that controller 
-			//needs to be well designed
-			virtual bool play(SDL_Event e) = 0;
+			virtual bool play() = 0;
 
 	};
 	class ClassicSpaceBattleController : BasicController{
 		private:
-			void init(int);
-			void close();
-			void processInput();
-			ClassicSpaceBattle* model;
-			ClassicSpaceBattleView* view;
-			bool gameOver;
+			void init(int);						//Initialize the Controller, given the Scale Ratio of the original game desired 
+			
+			void close();						//Handles memory when the object is destroyed
+			
+			void processInput();				//Handles the input and modifies the model according to it
+			
+			ClassicSpaceBattle* model;			//The model (Forced to be a ClassicSpaceBattle since is a CSBController)
+			ClassicSpaceBattleView* view;		//The View
+			
 
 
 		public: 
-			ClassicSpaceBattleController(int);
-			~ClassicSpaceBattleController();
-			bool play(SDL_Event e);
-			void setGameOver(bool);
-			bool restartGame(int);
+			ClassicSpaceBattleController(int);	//Constructor
+
+			~ClassicSpaceBattleController();	//Destructor
+
+			bool play();						//Plays one frame of the game
+			
+				
+			bool restartGame(int);				//Restarts the game with the given Scale_Ratio
 
 	};
 }

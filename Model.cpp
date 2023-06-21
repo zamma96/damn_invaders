@@ -14,6 +14,21 @@ using std::string;
 using namespace Entities;
 using namespace GameEntities;
 using namespace Utilities;
+
+/*
+ * This implementation make a large use of parametrized variables used to:
+ *	-Accurately recreate the 1978 game, both visually and gameplay wise.
+ *  -Give room to the developer to tweak all these values in order to create the desired gameplay experience.
+ *  -Easily change assets path 
+ * 
+ * Each variable has a name describing what it is, so they will not be commented.
+ * -------------------------------
+ *
+ * Note: I designed the game by incorporating into the model information that are relevant for the view.
+ * For example, apart from the size of the various entities, also the texture paths are fields.
+ * This design choice must not be seen as the best possible. It's just a choice I made.
+ */
+
 //--- parametrized playerShip values ---//
 
 const int 	BASIC_PLAYER_SHIP_WIDTH 	= 13;
@@ -21,7 +36,7 @@ const int 	BASIC_PLAYER_SHIP_HEIGHT 	= 8;
 const int 	BASIC_PLAYER_SHIP_HP		= 10;
 const int 	BASIC_PLAYER_SHIP_DAMAGE    = 5;
 const int 	BASIC_PLAYER_SHIP_VELOCITY	= 1;
-const float BASIC_PLAYER_SHIP_COOLDOWN  = 0.7;
+const float BASIC_PLAYER_SHIP_COOLDOWN  = 0.7f;
 string BASIC_PLAYER_TEXTURE_PATH 		= "player_ship.png";
 string PLAYER_BULLET_TEXTURE_PATH		= "simple_bullet.png";
 const int   BASIC_PLAYER_BULLET_HEIGHT  = 5;
@@ -35,7 +50,7 @@ const int 	PLAYER_BULLET_VELOCITY 		= 4;
 string BASIC_BULLET_TEXTURE_PATH		= "enemy_bullet_";
 const int   BASIC_ENEMY_BULLET_HEIGHT 	= 7;
 const int 	BASIC_ENEMY_BULLET_WIDTH	= 3;
-const float 	BASIC_ENEMY_BULLET_VELOCITY	= 1.5;
+const int 	BASIC_ENEMY_BULLET_VELOCITY	= 1;
 //--- Class One "Octopus" Ship ---// 
 
 const int 	CLASS_ONE_WIDTH 			= 12;
@@ -46,7 +61,7 @@ const int 	CLASS_ONE_HP 				= 5;
 const int 	CLASS_ONE_DAMAGE 			= 10;
 const int 	CLASS_ONE_VELOCITY 			= 1;
 const float CLASS_ONE_COOLDOWN 			= 1.0;
-const string* CLASS_ONE_NAME 			= new string("Class One");
+string CLASS_ONE_NAME 					= "Class One";
 string CLASS_ONE_TEXTURE_PATH 			= "octopus_ship_complete.png";
 
 //--- Class Two "Crab" Ship ---// 
@@ -59,7 +74,7 @@ const int 	CLASS_TWO_HP 				= 5;
 const int 	CLASS_TWO_DAMAGE 			= 10;
 const int 	CLASS_TWO_VELOCITY 			= 1;
 const float CLASS_TWO_COOLDOWN 			= 1.0;
-const string* CLASS_TWO_NAME 			= new string("Class Two");
+string CLASS_TWO_NAME 					=" Class Two";
 string CLASS_TWO_TEXTURE_PATH 			= "crab_ship_complete.png";
 
 //--- Class Three "Squid" Ship ---// 
@@ -72,13 +87,15 @@ const int 	CLASS_THREE_HP 				= 5;
 const int 	CLASS_THREE_DAMAGE 			= 10;
 const int 	CLASS_THREE_VELOCITY 		= 1;
 const float CLASS_THREE_COOLDOWN 		= 1.0;
-const string* CLASS_THREE_NAME 			= new string("Class Three");
+string CLASS_THREE_NAME 				= "Class Three";
 string CLASS_THREE_TEXTURE_PATH 		= "squid_ship_complete.png";
 
 
 
 //--- Parametrized Boards Values ---//
 //--- Classic Board ---//
+// Almost all these values are calculated by measuring the original 1978 game pixel by pixel.
+// Some refers to game logic entities, some others to visual sprites like Score, Credits, etc.
 //mp = mid-pivoted -> it appears that text elements are not bottom right alligned, but mid right.
 const int 	CLASSIC_BOARD_HEIGHT 		= 256;
 const int 	CLASSIC_BOARD_WIDTH 		= 224;
@@ -125,17 +142,21 @@ const int ENEMY_SHOTS_DELAY				= 40;
 
 
 //--- parametrized Shield values ---//
+/*
+ * Classic Shield Types is an encoding of the various Shield Units that compose a Shield
+ * Each integer represent the ShieldUnitType. Graphically, the first row of the vector represent
+ * the bottom row of the shield. For more info, check docs.
+ */
 
-//first row is bottom row in a graphical visualization
 const vector<vector<int>> CLASSIC_SHIELD_TYPES 	= { {5,5,6,0,0,0,7,5,5},
 													{5,5,5,5,5,5,5,5,5},
 													{5,5,5,5,5,5,5,5,5},
 													{1,2,5,5,5,5,5,4,3} };
 const int SHIELD_ROWS					= 4;
 const int SHIELD_COLUMNS				= 9;
-string INTACT_SHIELD_PREFIX				= "shield/intact_shield_";
+string INTACT_SHIELD_PREFIX				= "shield/intact_shield_0.png";
 string BROKEN_SHIELD_PREFIX				= "shield/broken_shield_";
-const int BROKEN_CARDINALITY			= 8;
+const int BROKEN_CARDINALITY			= 8;		//The number of broken unitShieldTexture
 
 
 const int UNIT_SHIELD_WIDTH				= 2;
@@ -268,12 +289,12 @@ int Bullet::getBulletDirection()
 
 Ship::Ship(int x,int y,int width, int height, int hp, int damage, int velocity, float cooldown,string texturePath,string bulletTexturePath) : LivingEntity(x,y,width,height)
 {
-	this->hp = hp;
-	this->damage = damage;
-	this->velocity = velocity;
-	this->cooldown = cooldown;
-	this->texturePath = texturePath;
-	this->bulletTexturePath = bulletTexturePath;
+	this->hp					= hp;
+	this->damage				= damage;
+	this->velocity				= velocity;
+	this->cooldown				= cooldown;
+	this->texturePath			= texturePath;
+	this->bulletTexturePath		= bulletTexturePath;
 }
 
 int Ship::getHp()
@@ -288,10 +309,8 @@ float Ship::getCooldown()
 
 bool Ship::inferDamage(int damage)
 {
-	// printf("I received %d damage!",damage);
-	this->hp = this->hp-damage;
-	// printf("My remaining hp are %d!",this->hp);
-	return (this->hp <= 0);
+	this->hp = this->hp-damage;	
+	return (this->hp <= 0);		 //If hp goes below zero, it returns true, that means the ship is destroyed.
 }
 
 int Ship::getAmmoDamage()
@@ -308,9 +327,6 @@ void Ship::setVelocity(int velocity)
 {
 	this->velocity = velocity;
 }
-
-//dull implementation
-bool Ship::readyToShoot(){ return false;}
 
 void Ship::printSummary()
 {
@@ -336,6 +352,11 @@ PlayerShip::PlayerShip(int x,int y,int width, int height, int hp, int damage, in
 	this->playerName = name;
 }
 
+PlayerShip::~PlayerShip()
+{
+	delete this->playerName;
+}
+
 void PlayerShip::printSummary()
 {
 	Ship::printSummary();
@@ -352,14 +373,14 @@ void PlayerShip::moveHorizontally(int direction)
 
 //------- EnemyShip -------//
 
-EnemyShip::EnemyShip(int x,int y,int width, int height,int points, int hp, int damage, int velocity, float cooldown,int pushDistance, int downDistance,const string* shipClass,string texturePath,string bulletTexturePath) : Ship(x,y,width,height,hp,damage,velocity,cooldown,texturePath,bulletTexturePath)
+EnemyShip::EnemyShip(int x,int y,int width, int height,int points, int hp, int damage, int velocity, float cooldown,int pushDistance, int downDistance,string shipClass,string texturePath,string bulletTexturePath) : Ship(x,y,width,height,hp,damage,velocity,cooldown,texturePath,bulletTexturePath)
 {
-	this->pushDistance = pushDistance;
-	this ->downDistance = downDistance;
+	this->pushDistance			= pushDistance;
+	this ->downDistance			= downDistance;
 	//the ships always start facing right direction
-	direction = 1;
-	this->shipClass = shipClass;
-	this->points = points;
+	direction					= 1;
+	this->shipClass				= shipClass;
+	this->points				= points;
 	
 }
 
@@ -374,10 +395,6 @@ bool EnemyShip::isGoingRight()
 	return (this->direction>0);
 }
 
-int EnemyShip::getDirection()
-{
-	return this->direction;
-}
 
 /* The push method represents the classic, space invaders move of a ship. 
 it just get pushed to the direction where it is facing, with a pushDistance magnitude*/
@@ -407,7 +424,7 @@ int EnemyShip::getPushDistance()
 void EnemyShip::printSummary()
 {
 	Ship::printSummary();
-	printf("Ship Class is %s\n",this->shipClass->c_str());
+	printf("Ship Class is %s\n",this->shipClass);
 }
 
 //----------------------------//
@@ -451,102 +468,88 @@ void ClassThreeShip::getClassName()
 
 Shield::Shield(int startingX,int startingY, int scale_ratio)
 {
-	this->startingX = startingX;
-	this->startingY = startingY;
-	this->scale_ratio = scale_ratio;
-	this->rows = SHIELD_ROWS;
-	this->columns = SHIELD_COLUMNS;
-	this->unitShieldWidth = UNIT_SHIELD_WIDTH;
-	this->unitShieldHeight = UNIT_SHIELD_HEIGHT;
-	this->shieldWidth =	(this->unitShieldWidth*this->scale_ratio)*this->columns;
-	this->shieldHeight = (this->unitShieldHeight*this->scale_ratio)*this->rows;
+	this->startingX				= startingX;
+	this->startingY				= startingY;
+	this->scale_ratio			= scale_ratio;
+	this->rows					= SHIELD_ROWS;
+	this->columns				= SHIELD_COLUMNS;
+	this->unitShieldWidth		= UNIT_SHIELD_WIDTH;
+	this->unitShieldHeight		= UNIT_SHIELD_HEIGHT;
+	this->shieldWidth			=(this->unitShieldWidth*this->scale_ratio)*this->columns;
+	this->shieldHeight			=(this->unitShieldHeight*this->scale_ratio)*this->rows;
 	this->shieldParts.resize(this->rows,vector<std::shared_ptr<ShieldUnit>>(this->columns));
 	this->init();
+}
+
+Entities::Shield::~Shield()
+{
+	for (int i = 0; i < this->rows; i++)
+	{
+		this->shieldParts[i].clear();
+	}
 }
 
 void Shield::init()
 {
 	int x,y;
+
+	//for each row of shield units
 	for(int i = 0; i < this->rows; i++)
 	{
+		//for each column of shield unit
 		for(int j = 0; j < this->columns; j++)
-		{
+		{	
+			//we increment the x and y to properly calculate the coordinates of each unit shield
 			x = this->startingX	+ (j*(this->unitShieldWidth*this->scale_ratio));
 			y = this->startingY - (i*(this->unitShieldHeight*this->scale_ratio));
-			createShield(x,y,CLASSIC_SHIELD_TYPES[i][j],i,j);
+
+			//we create the unit shield given its coordinates
+			createShield(x,y,CLASSIC_SHIELD_TYPES[i][j],i,j); 
 		}
 	}
 
 }
 
+
+
+
 void Shield::createShield(int x, int y, int type, int row, int column)
 {
+	// the intact and broken texture path
 	string intactTexturePath = INTACT_SHIELD_PREFIX;
 	string brokenTexturePath = randomBrokenPath();
-	ShieldUnit* current;
-	// string complete = INTACT_SHIELD_PREFIX+"1.png";
-	// std::cout << complete <<std::endl;
-	switch(type)
-	{
+
+	//we use a variable that holds the type number as a char (we add 48 to have to correct ascii value)
+	char typeInChar = type + 48;
+
+	//to specify the correct path, we must substitute the 23th character of the string template
+	intactTexturePath[21] = typeInChar;
+
+
+	ShieldUnit* current = NULL;
+	bool halfShield = true;
+
 	
-		case 0:
-			{
-				current = NULL; 
-				break;
-			}
-		case 1:
-			{
-				current = new ShieldUnit(x,y,UNIT_SHIELD_WIDTH*this->scale_ratio,UNIT_SHIELD_HEIGHT*this->scale_ratio,intactTexturePath+"1.png",brokenTexturePath,true);
-				break;
-			}
-		case 2:
-			{
-				current = new ShieldUnit(x,y,UNIT_SHIELD_WIDTH*this->scale_ratio,UNIT_SHIELD_HEIGHT*this->scale_ratio,intactTexturePath+"2.png",brokenTexturePath,false);
-				break;
-			}
-		case 3:
-			{
-				current = new ShieldUnit(x,y,UNIT_SHIELD_WIDTH*this->scale_ratio,UNIT_SHIELD_HEIGHT*this->scale_ratio,intactTexturePath+"3.png",brokenTexturePath,true);
-				break;
-			}
-		case 4:
-			{
-				current = new ShieldUnit(x,y,UNIT_SHIELD_WIDTH*this->scale_ratio,UNIT_SHIELD_HEIGHT*this->scale_ratio,intactTexturePath+"4.png",brokenTexturePath,false);
-				break;
-			}
-		case 5:
-			{
-				current = new ShieldUnit(x,y,UNIT_SHIELD_WIDTH*this->scale_ratio,UNIT_SHIELD_HEIGHT*this->scale_ratio,intactTexturePath+"5.png",brokenTexturePath,false);
-				break;
-			}
-		case 6:
-			{
-				current = new ShieldUnit(x,y,UNIT_SHIELD_WIDTH*this->scale_ratio,UNIT_SHIELD_HEIGHT*this->scale_ratio,intactTexturePath+"6.png",brokenTexturePath,true);
-				break;
-			}
-		case 7:
-			{
-				current = new ShieldUnit(x,y,UNIT_SHIELD_WIDTH*this->scale_ratio,UNIT_SHIELD_HEIGHT*this->scale_ratio,intactTexturePath+"7.png",brokenTexturePath,true);
-				break;
-			}
-		default:
-			{
-				return;
-				
-			}
+	if (type == 2 || type == 4 || type == 5) //these types are not halfshields
+	{
+		halfShield = false;
 	}
 
+	if (type != 0) //if type == 0, the shield unit must remain null
+	{
+		current = new ShieldUnit(x, y, UNIT_SHIELD_WIDTH * this->scale_ratio, UNIT_SHIELD_HEIGHT * this->scale_ratio, intactTexturePath, brokenTexturePath, halfShield);
+	}
+	
+	//we create the shared_ptr
 	std::shared_ptr<ShieldUnit> shieldUnitPointer(current);
+	//we add the pointer at the current row and column
 	this->shieldParts.at(row).at(column) = shieldUnitPointer;
 }
 
 string Shield::randomBrokenPath()
 {
-	
-	//could not work
-	string suffix = std::to_string(std::rand() % BROKEN_CARDINALITY);
-	// string complete = BROKEN_SHIELD_PREFIX+suffix+".png";
-	// std::cout << complete <<std::endl;
+	//we pick a random number between [0,BROKEN_CARDINALITY) and we convert it into a string
+	string suffix = std::to_string(std::rand() % BROKEN_CARDINALITY); 
 	return BROKEN_SHIELD_PREFIX+suffix+".png";
 
 }
@@ -573,7 +576,6 @@ int Shield::getShieldHeight()
 
 std::shared_ptr<ShieldUnit> Shield::getShieldUnitByIndex(int row, int column)
 {
-	// std::cout << this->shieldParts[row][column]->getBrokenTexturePath() <<std::endl;
 	return this->shieldParts[row][column];
 }
 
@@ -583,8 +585,8 @@ std::shared_ptr<ShieldUnit> Shield::getShieldUnitByIndex(int row, int column)
 
 Board::Board(int width,int height, int scale_ratio)
 {
-	this -> width = width*scale_ratio;
-	this -> height = height*scale_ratio;
+	this -> width		= width*scale_ratio;
+	this -> height		= height*scale_ratio;
 	this -> scale_ratio = scale_ratio;
 }
 
@@ -659,50 +661,40 @@ ClassicBoard::ClassicBoard(int scale_ratio) : Board(CLASSIC_BOARD_WIDTH,CLASSIC_
 void SpaceBattle::movePlayer(int direction,bool vertical)
 {
 
-	if(!vertical)
+	if(!vertical) //if it's a horizontal move, we call the moveHorizontal method
 	{
 		this->playerShip->moveHorizontally(direction);
 	}
 	else
 	{
-
+		//vertical movement to be implementd
 	}
 }
 
 int SpaceBattle::getBulletsSize()
 {
-	return this->bullets.size();
+	return (int)this->bullets.size();
 }
 
 
 bool SpaceBattle::checkCollision(LivingEntity* one, LivingEntity* two)
 {
-	//we need to check if the two entities are overlapping
-	//we will try a first basic implementation
-	//we want to check if entity one hits entity two. 
-	//we need to check if any pixel of entity one is included between the
-	//rectangle of entity 2
-	// if(one == NULL | two == NULL)
-	// {
-	// 	return false;
-	// }
-	int currX,currY;
-	int twoX,twoY;
-	for(int i = 0; i < one->getWidth();i++)
-	{
-		for(int j=0; j<one->getHeight();j++)
-		{
-			currX = i+one->getX();
-			currY = one->getY()+j; //THIS NEEDS TO BE CHECKED WE STILL DOWN KNOW IF X,Y ARE UPPER RIGHT OR BOTTOM RIGHT CORNER
-			twoX  = two->getX();
-			twoY  = two->getY();
-			if((currX >= twoX) && (currX <= twoX+two->getWidth()) && (currY >= twoY) && (currY <= twoY + two->getHeight()))
-			{
-				return true;
-			}   
-		}
-	}
-	return false;
+	/*We have four condition that determines if this two rectangles DON'T Overlap.
+	 * x1 indicates the leftmost x, while x2 indicates the rightmost x.
+	 * y1 is the top coordinate, y2 is the bottom coordinate.
+	 * A) one.x1 < two.x2
+	 * B) one.x2 > two.x1
+	 * C) one.y1 > two.y2
+	 * D) one.y2 < two.y1
+	 * The OR of this four coordinates garantees a non overlap.
+	 * We return true if they do overlap
+	 */
+	bool a = (one->getX() < (two->getX() + two->getWidth()));
+	bool b = ((one->getX() + one->getWidth()) > two->getX());
+	bool c = (one->getY() < (two->getY() + two->getHeight()));
+	bool d = ((one->getY() + one->getHeight()) > two->getY());
+
+	return  (a && b && c && d);
 }
 
 std::shared_ptr<LivingEntity> SpaceBattle::getLastBullet()
@@ -713,15 +705,20 @@ std::shared_ptr<LivingEntity> SpaceBattle::getLastBullet()
 bool SpaceBattle::createPlayerBullet()
 {
 
-	//we need to address the cooldown otherwise we can spam bullets
+	//we check if the cooldown of the gun is respected. If its not, we don't create the bullet
 	if(!(this->currentTicks >= (this->lastShotTicks+(this->playerShip->getCooldown()*GLOBAL_FPS))))
 	{
 		return false;
-	}		
-	//the x of the bullet must be carefully calculated so we put it in a variable
+	}
+
+	//bullet_x = playerShip.x + playerShip.width/2 - bullet.width/2
 	int bullet_x = (this->playerShip->getX()+(this->playerShip->getWidth()/2)-((BASIC_PLAYER_BULLET_WIDTH*this->scale_ratio)/2));
+	
+	//we create the bullet and then we put it in the bullets vector.
 	std::shared_ptr<Bullet> p1(new Bullet(bullet_x,this->playerShip->getY() - PLAYER_SHIP_BULLET_OFFSET*this->scale_ratio,BASIC_PLAYER_BULLET_WIDTH*this->scale_ratio, BASIC_PLAYER_BULLET_HEIGHT*this->scale_ratio,BASIC_PLAYER_SHIP_DAMAGE,PLAYER_BULLET_VELOCITY*this->scale_ratio,-1));
 	this->bullets.push_back(p1);
+
+	//we update the last shot tick
 	this->lastShotTicks = this->currentTicks;
 	return true;
 	
@@ -735,8 +732,8 @@ ClassicSpaceBattle::ClassicSpaceBattle(vector<EnemyShipClasses> classes,int scal
 	assert(classes.size()==(rowsOfEnemies));
 	this->gameBoard 			= new ClassicBoard(scale_ratio);
 	this->rowsOfEnemies 		= rowsOfEnemies;
-	this-> numberOfShields 		= shields;
-	this-> enemiesPerRow 		= enemiesPerRow;
+	this->numberOfShields 		= shields;
+	this->enemiesPerRow 		= enemiesPerRow;
 	this->enemiesRemaining      = enemiesPerRow*rowsOfEnemies;
 	this->classPerRow 			= classes;
 	this->enemies 				= vector<vector<std::shared_ptr<EnemyShip>>>(enemiesPerRow);
@@ -761,17 +758,22 @@ ClassicSpaceBattle::ClassicSpaceBattle(vector<EnemyShipClasses> classes,int scal
 void ClassicSpaceBattle::init()
 {
 	//random seed for enemy bullet spawn
-	std::srand(std::time(nullptr));
+	std::srand((unsigned int)std::time(nullptr));
 
 
-	//creating Enemies
+	//we create the enemies
 	createEnemies();
+	//we take the pointer of the first ship to move (bottom left ship) and we save it
 	this->firstShip = enemyQueue.front();
-	//creating player
+	
+	//we create the player
 	//what if we pass a player in input when creating the battle?
 	createPlayer();
-	//creating shields
+
+	//we create the shields
 	createShields();
+
+	//we set gamePhase to "PLAYING"
 	this->gamePhase	= PLAYING;
 }
 
@@ -825,7 +827,7 @@ void ClassicSpaceBattle::findEnemyInQueue(EnemyShip* ship)
 void ClassicSpaceBattle::createEnemies()
 {	
 	int startY;
-	int startX = this->gameBoard->getXCenter();
+	int startX		 = this->gameBoard->getXCenter();
 	int enemyYOffset = this->gameBoard->getEnemyYOffset();
 	int enemyXOffset = this->gameBoard->getEnemyXOffset();
 	startX = startX - enemyXOffset/2;
@@ -835,14 +837,14 @@ void ClassicSpaceBattle::createEnemies()
 	//If we have an odd number of rows
 	if(this->rowsOfEnemies%2 == 1)
 	{
-		/* startY = enemyYAreaCenter +((rows-1)/2)*enemyOffset
-		*/
+		// startY = enemyYAreaCenter +((rows-1)/2)*enemyOffset
+		
 		startY = this->gameBoard->getEnemyYAreaCenter() + ((this->rowsOfEnemies-1)/2)*enemyYOffset;
 	}
 	else //if we have a pair number of rows
 	{
-		/* startY = enemyYAreaCenter + 1/2(enemyOffset) + ((rows-2)/2)*enemyOffset
-		*/
+		// startY = enemyYAreaCenter + 1/2(enemyOffset) + ((rows-2)/2)*enemyOffset
+		
 		startY = this->gameBoard->getEnemyYAreaCenter() + (enemyYOffset)*1/2 + ((this->rowsOfEnemies-2)*enemyYOffset);
 	}
 	//Also startX differs upon number of Enemies per Rows(instead of rows)
@@ -908,7 +910,7 @@ void ClassicSpaceBattle::createShields()
 	{
 		return;
 	}
-	//assert(this->numberOfShields>0);
+	
 	int startingX = this->gameBoard->getShieldX();
 	int startingY = this->gameBoard->getShieldY();
 	int offset 	  = this->gameBoard->getShieldOffset();
@@ -935,23 +937,34 @@ void ClassicSpaceBattle::initBasic()
 
 }
 
+/* Update contains all the logic of the game itself, like moving bullets, moving enemyships, etc.
+ */
 void ClassicSpaceBattle::update()
 {
+	//if the game is on play phase
 	if(this->gamePhase == PLAYING)
 	{
+		//if the playerShip has just been destroyed
 		if(this->playerShipDestroyed)
 		{
+			//we set the ship X coordinates to its starting ones. Lifes have been already decreased in another part of code
 			this->playerShip->setX(this->gameBoard->getPlayerXSpawn());
 			this->playerShipDestroyed = false;
 		}
+
 		//we increment the ticks
 		this->currentTicks++;
-		//Update contains all the logic of the game itself, like moving bullets, moving enemyships, etc.
+		
+		//every CLASSIC_MOVEMENT_RATIO frames, we call the enemies movement method
 		if(this->currentTicks%CLASSIC_MOVEMENT_RATIO == 0)
 		{
 			moveEnemiesClassic();
 		}
+		
+		// we move the bullets
 		moveBullets();
+
+		//every "enemyShotsDelay" frame, we create a new bullet from the enemy
 		if(this->currentTicks >= (this->lastEnemyShotTicks+this->enemyShotsDelay))
 		{
 			spawnEnemyBullet();
@@ -972,19 +985,21 @@ void ClassicSpaceBattle::update()
 	
 }
 
-/* moveEnemiesClassic aims to reproduce the classic behaviour of enemy ships in the game */
-/* Each frame, one ship (starting from bottom row, most left one) is pushed to the new  */
-/* position. What does it mean? that the less ships there are, the faster they go. This  */
-/* was a bug in the original game but the designer found it entertaining so it was kept  */	
+/* moveEnemiesClassic aims to reproduce the classic behaviour of enemy ships in the game 
+ * Each frame, one ship (starting from bottom row, most left one) is pushed to the new  
+ * position. What does it mean? that the less ships there are, the faster they go. This  
+ * was a bug in the original game but the designer found it entertaining so it was kept  
+ */	
 void ClassicSpaceBattle::moveEnemiesClassic()
 {
 
 
-	//are we in push or down phase? 
-	//push phase occurs in normal condition
-	//down phase occurs when one element has reached the left or right border
-	//so we should push element. when one element reach the current border, then the
-	// next cycle they all go down
+	/* are we in push or down phase? 
+	 * push phase occurs in normal condition
+	 * down phase occurs when one element has reached the left or right border
+	 * so we should push element. when one element reach the current border, then the
+	 * next cycle they all go down
+	 */
 	bool found = false;
 	std::shared_ptr<EnemyShip>  currentShip;
 	while(!found)
@@ -1002,11 +1017,13 @@ void ClassicSpaceBattle::moveEnemiesClassic()
 		{
 			this->currentPhase = DOWN;
 		}
-
+		//if the current ship is not null and is not destroyed (isDrawable deliver the same information)
 		if(currentShip != NULL && currentShip->isDrawable())
 		{
 			found = true;
 		}
+
+		//we must take the element off the queue and back to it again
 		this->enemyQueue.pop();
 		this->enemyQueue.push(currentShip);
 	}
@@ -1014,21 +1031,25 @@ void ClassicSpaceBattle::moveEnemiesClassic()
 	{
 		//if im in push phase
 		currentShip->push();
+		
+		//if after the push, the ship is touching the border, then we must enter the ENDING_PUSH phase
 		if(checkBoundaryCollision(currentShip.get()))
 		{
-			//after the push I check the boundaries to see if i'm at the border
 			this->currentPhase = ENDING_PUSH;
 		}
 	}
+	//if I'm in ending push phase, I just need to push the currentShip
 	else if(this->currentPhase == ENDING_PUSH)
 	{
 		currentShip->push();
 		
 	}
+	//if I'm in the DOWN phase, I must push the ship down and flip its direction
 	else if(this->currentPhase == DOWN)
 	{
 		currentShip->down();
 		currentShip->flip();
+		//if after going down I'm touching the shields, then its gameover.
 		if(checkIfEnemyLanded(currentShip.get()))
 		{
 			this->enemyLanded = true;
@@ -1040,31 +1061,32 @@ void ClassicSpaceBattle::moveEnemiesClassic()
 
 void ClassicSpaceBattle::moveEnemies()
 {
-
+	//anoter move method is still not implemented
 }
 
+/* This method spawns an enemy bullet from a random "first line" enemy
+*/
 void ClassicSpaceBattle::spawnEnemyBullet()
 {
-	//this method spawns an enemy bullet by a random "first line" enemy
-	//which column will shoot?
-	int random_column = (std::rand() % (this->enemiesPerRow));
-	int line = 0;
+	
+	int random_column = (std::rand() % (this->enemiesPerRow));	//we take a random column
+	int line = 0;												//starting from line 0
 	bool found = false;
 	int starting_column = random_column;
 	//we have to find an enemy that is not null, starting from that column and going right to left
 	while(!found)
 	{
-		if(this->enemies.at(line).at(random_column)!=nullptr)
+		if(this->enemies.at(line).at(random_column)!=nullptr)	//if the enemy in coordinates [line][column] still exists, then we found who's gonna shoot next
 		{
 			found = true;
 		}
 		else
 		{
-			if(line != this->rowsOfEnemies-1)
+			if(line != this->rowsOfEnemies-1)					//otherwise we change line to see if an enemy is present
 			{
 				line++;
 			}
-			else
+			else                                                //if all lines in that column have been explored, we change column.
 			{
 				random_column = (random_column + 1)%(this->enemiesPerRow);
 				if(random_column == starting_column)
@@ -1077,8 +1099,8 @@ void ClassicSpaceBattle::spawnEnemyBullet()
 		}
 	}
 
-	//random_column and line stores the coordinates of the enemy shooting
-	makeEnemyShoot(getEnemyByRowAndColumn(line,random_column));
+		
+	makeEnemyShoot(getEnemyByRowAndColumn(line,random_column));	//at this point, line and random_column stores the coordinates of a valid enemy
 
 
 
@@ -1086,18 +1108,27 @@ void ClassicSpaceBattle::spawnEnemyBullet()
 
 
 }
-
+/* Simple supportive method to complete "spawnEnemyBullet()" to help readability of code
+*/
 void ClassicSpaceBattle::makeEnemyShoot(EnemyShip* ship)
 {
-	//Simple supportive method to complete "spawn enemy bullet" to help readability of code
-	int bullet_x = (ship->getX()+(ship->getWidth()/2)-((BASIC_PLAYER_BULLET_WIDTH*this->scale_ratio)/2));
+	//we calculate the x coordinates of the bullet 
+	int bullet_x = (ship->getX()+(ship->getWidth()/2)-((BASIC_PLAYER_BULLET_WIDTH*this->scale_ratio)/2));	
+
+	//we create the bullet and save it in a shared_ptr 
 	std::shared_ptr<Bullet> p1(new Bullet(bullet_x,ship->getY()+ship->getHeight(),BASIC_ENEMY_BULLET_WIDTH*this->scale_ratio, BASIC_ENEMY_BULLET_HEIGHT*this->scale_ratio,ship->getAmmoDamage(),BASIC_ENEMY_BULLET_VELOCITY*this->scale_ratio,1));
+
+	//we add the pointer to the vectors of bullets
 	this->bullets.push_back(p1);
+	
+	//we update the tick of the last time the enemy shoot to deal with cooldowns.
 	this->lastEnemyShotTicks = this->currentTicks;
 	return;
 
 }
 
+/*	This method checks collisions of a bullet with all kind of entities, including other bullets, boundaries and enemies/space ship.
+*/
 void ClassicSpaceBattle::checkBulletsCollision()
 {
 
@@ -1105,7 +1136,7 @@ void ClassicSpaceBattle::checkBulletsCollision()
 	int left_index = 0;
 	//index used to check collision between bullets
 	int left_ausiliar_index = left_index;
-	int right_index = this->bullets.size() - 1;
+	int right_index = (int)this->bullets.size() - 1;
 
 	while(left_index <= right_index)
 	{
@@ -1329,7 +1360,7 @@ bool ClassicSpaceBattle::checkBulletCollisionWithSingleShield(Bullet* bullet,int
 	{
 		for(int j = 0; j < this->shields[index]->getShieldColumns(); j++)
 		{
-			if(i == 0 && ( j == 3 |j == 4| j==5)) //0,3;0,4;0,5 are not part of the shield
+			if(i == 0 && ( j == 3 || j == 4 || j==5)) //0,3;0,4;0,5 are not part of the shield
 			{
 				continue;
 			}
@@ -1355,7 +1386,7 @@ bool ClassicSpaceBattle::checkEnemyCollisionWithSingleShield(EnemyShip* ship,int
 	{
 		for(int j = 0; j < this->shields[index]->getShieldColumns(); j++)
 		{
-			if(i == 0 && ( j == 3 |j == 4| j==5)) //0,3;0,4;0,5 are not part of the shield
+			if(i == 0 && ( j == 3 || j == 4 || j==5)) //0,3;0,4;0,5 are not part of the shield
 			{
 				continue;
 			}
@@ -1385,7 +1416,7 @@ void ClassicSpaceBattle::moveBullets()
 
 void ClassicSpaceBattle::checkWinConditions()
 {	
-	if(this->playerLifes == 0 | this->enemyLanded)
+	if(this->playerLifes == 0 || this->enemyLanded)
 	{
 		this->gamePhase = LOSS;
 	}
@@ -1397,7 +1428,7 @@ void ClassicSpaceBattle::checkWinConditions()
 
 void ClassicSpaceBattle::printSummary()
 {
-	printf("\n We have %d shields; %d enemies divided in %d rows",this->shields,this->enemiesPerRow*this->rowsOfEnemies,this->rowsOfEnemies);
+	printf("to be implemented");
 }
 
 PlayerShip* ClassicSpaceBattle::getPlayerShip()

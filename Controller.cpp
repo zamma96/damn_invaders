@@ -5,7 +5,8 @@
 #include <stdio.h>
 #include <vector>
 #include <SDL.h>
-#undef main
+#define SDL_MAIN_HANDLED
+//#undef main
 using std::string;
 
 using namespace Entities;
@@ -14,12 +15,22 @@ using namespace ViewEntities;
 using namespace Controller;
 using namespace Utilities;
 
-//---- Global Variables ----//
-const int GAME_SCALE_RATIO 			= 4;
+//---- Const Variables ----//
+const int GAME_SCALE_RATIO 			= 1;
+
 const int FRAME_RATE 				= 60;
+
 const int SCREEN_TICKS_PER_FRAME 	= 1000/FRAME_RATE;	
+
+/* This vector specifies the class of ship per each line. First element is the most bottom line of enemies, going upwards. */
 const vector<EnemyShipClasses> CLASSIC_SHIP_CLASSES{CLASS_ONE,CLASS_ONE,CLASS_TWO,CLASS_TWO,CLASS_THREE};
 
+
+/* Creates a CSBController given the scale_ratio for the view. 
+   A Classic Space Battle is infact designed to reproduce the 1974 game 1:1.
+   It means that every dimension and sprite will be the same of the original;
+   The final effect could result different, for more info check docs.
+   Since 224*256 is pretty small nowadays, we scale everything by the value of scale_ratio */
 ClassicSpaceBattleController::ClassicSpaceBattleController(int scale_ratio)
 {
 	init(scale_ratio);
@@ -35,13 +46,12 @@ void ClassicSpaceBattleController::init(int scale_ratio)
 	//-- Model Creation --//
 
 	
-	
 	this->model = new ClassicSpaceBattle(CLASSIC_SHIP_CLASSES,scale_ratio = scale_ratio	);
 
 	//-- View Creation --//
 	this->view = new ClassicSpaceBattleView(model);
 
-	this->gameOver = false;
+	
 
 }
 
@@ -55,42 +65,51 @@ void ClassicSpaceBattleController::close()
 
 }
 
-bool ClassicSpaceBattleController::play(SDL_Event e)
+bool ClassicSpaceBattleController::play()
 {	
+	//We check if win conditions are reached
+	this->model->checkWinConditions();					
 
-	this->model->checkWinConditions();
+	//Then we see which phase is resulted by the last check
 	ClassicGamePhases currentPhase = this->model->getGamePhase();
+
 	switch(currentPhase)
 	{	
+		//if we are in the playing phase
 		case PLAYING:
 			{
-				processInput();
+				processInput();	//we process player input
 				break;
 			}
+		//if the game is lost
 		case LOSS:
 			{
 				printf("The game has been lost\n");
+				//we return true, to communicate that the game has entered a terminal phase
 				return true;
 				break;
 			}
 		case WIN:
 			{
 				printf("The game has been won\n");
+				//we return true, to communicate that the game has entered a terminal phase
 				return true;
 				break;
 			}
 		case PAUSED:
 			{
+				//if its paused, we do nothing
 				return false;
 				break;
 			}
 		case INIT:
-			{
+			{	//if the game is initializing, we do nothing
 				return false;
 				break;
 			}
 		default:
 			{
+				//this snippet of code should'nt be reachable
 				printf("what is going on? default gamestate!?\n");
 				return false;
 				break;
@@ -98,51 +117,62 @@ bool ClassicSpaceBattleController::play(SDL_Event e)
 
 	}
 	
-
+	/*Then we update all the game logic of the model*/
 	this->model->update();
+
+	/*Once we're done, we call the update of the view so that it can changes according to the changes in the model.*/
 	this->view->update();
+
+	//return false means that the game has not entered a terminal phase
 	return false; 
 
 }
 
-void ClassicSpaceBattleController::setGameOver(bool value)
-{
-	this->gameOver = value;
-}
 
 bool ClassicSpaceBattleController::restartGame(int scale_ratio)
 {
-	printf("restarting the game :) \n");
-
+	//By default, the game will restart successfully
 	bool success = true;
+
+	//we save current model in a variable
 	ClassicSpaceBattle* temp = this->model;
+
+	//we create a new model
 	this->model = new ClassicSpaceBattle(CLASSIC_SHIP_CLASSES,scale_ratio = scale_ratio	);
-	this->gameOver = false;
+	
+	//we delete the old model
+	delete temp;
+	
+	//we warn the view to change it's model and to restart. If successfully, it will return true
 	success = this->view->changeModelAndRestart(this->model);
+	
 	return success;
 
 
 }
 void ClassicSpaceBattleController::processInput()
 {
-	//Process Input
+	//We get the current KeyState to process input
 	const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
+
+	//if we press left, we move the player left
 	if( currentKeyStates[ SDL_SCANCODE_LEFT ] )
 	{
-		//if we press left, we move the player left
 		this->model->movePlayer(-1,false);
-		
 	}
+	//if we press right, we move the player right
 	else if( currentKeyStates[ SDL_SCANCODE_RIGHT ] )
 	{
-		//if we press right, we move the player right
+		
 		this->model->movePlayer(1,false);
 	}
+	//if we press space, we shoot with the guns
 	else if ( currentKeyStates[ SDL_SCANCODE_SPACE ])
 	{
-		//this->model->movePlayer(1,false);
+		//if the creating of the bullet have success
 		if(this->model->createPlayerBullet())
 		{
+			//we must inform the view that a new bullet is inside the game model
 			this->view->addNewPlayerBullet();
 		}
 	}
@@ -150,10 +180,11 @@ void ClassicSpaceBattleController::processInput()
 	
 }
 
-int main(int argc, char const *argv[])
+int main(int argc, char* argv[])
 {
-
+	//we create the controller
 	ClassicSpaceBattleController* controller = new ClassicSpaceBattleController(GAME_SCALE_RATIO);
+	
 	bool quit = false;
 
 	SDL_Event e;
@@ -188,12 +219,11 @@ int main(int argc, char const *argv[])
 				avgFPS = 0;
 			}
 
-			// printf("avgFPS is %f\n",avgFPS);
+	
 
-			if(controller->play(e))
+			if(controller->play())
 			{
 				//if the game is over
-				controller->setGameOver(true);
 				controller->restartGame(GAME_SCALE_RATIO);
 			}
 			countedFrames++;
