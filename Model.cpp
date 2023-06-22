@@ -1563,6 +1563,21 @@ int ClassicSpaceBattle::getEnemiesRemaining()
 	return this->enemiesRemaining;
 }
 
+void ClassicSpaceBattle::pauseGame()
+{
+	this->gamePhase = PAUSED;
+}
+
+void ClassicSpaceBattle::unPauseGame()
+{
+	this->gamePhase = PLAYING;
+}
+
+bool GameEntities::ClassicSpaceBattle::isGamePaused()
+{
+	return this->gamePhase == PAUSED;
+}
+
 //-----------------------------//
 //-------- UTILITIES ----------//
 //-----------------------------//

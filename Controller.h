@@ -28,9 +28,13 @@ namespace Controller
 			
 			void processInput();				//Handles the input and modifies the model according to it
 			
+			void processInputInPause();			//Handles the input when game is paused
+
 			ClassicSpaceBattle* model;			//The model (Forced to be a ClassicSpaceBattle since is a CSBController)
 			ClassicSpaceBattleView* view;		//The View
 			
+
+			Utilities::SDLTimer pauseTimer;				//timer used for pause
 
 
 		public: 

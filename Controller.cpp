@@ -16,11 +16,13 @@ using namespace Controller;
 using namespace Utilities;
 
 //---- Const Variables ----//
-const int GAME_SCALE_RATIO 			= 1;
+const int GAME_SCALE_RATIO 			= 2;
 
 const int FRAME_RATE 				= 60;
 
 const int SCREEN_TICKS_PER_FRAME 	= 1000/FRAME_RATE;	
+
+const int PAUSE_COOLDOWN_TICKS		= 250;
 
 /* This vector specifies the class of ship per each line. First element is the most bottom line of enemies, going upwards. */
 const vector<EnemyShipClasses> CLASSIC_SHIP_CLASSES{CLASS_ONE,CLASS_ONE,CLASS_TWO,CLASS_TWO,CLASS_THREE};
@@ -51,6 +53,7 @@ void ClassicSpaceBattleController::init(int scale_ratio)
 	//-- View Creation --//
 	this->view = new ClassicSpaceBattleView(model);
 
+	this->pauseTimer.start();
 	
 
 }
@@ -98,8 +101,8 @@ bool ClassicSpaceBattleController::play()
 			}
 		case PAUSED:
 			{
-				//if its paused, we do nothing
-				return false;
+				
+				processInputInPause();
 				break;
 			}
 		case INIT:
@@ -146,6 +149,9 @@ bool ClassicSpaceBattleController::restartGame(int scale_ratio)
 	//we warn the view to change it's model and to restart. If successfully, it will return true
 	success = this->view->changeModelAndRestart(this->model);
 	
+	this->pauseTimer.stop();
+	this->pauseTimer.start();
+
 	return success;
 
 
@@ -176,8 +182,27 @@ void ClassicSpaceBattleController::processInput()
 			this->view->addNewPlayerBullet();
 		}
 	}
+	else if (currentKeyStates[SDL_SCANCODE_P] && this->pauseTimer.getTicks() > PAUSE_COOLDOWN_TICKS)
+	{
+		this->pauseTimer.stop();
+		this->pauseTimer.start();
+		this->model->pauseGame();
+	}
 
 	
+}
+
+void ClassicSpaceBattleController::processInputInPause()
+{
+	//We get the current KeyState to process input
+	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+	printf("porco dio i tick sono %i", this->pauseTimer.getTicks());
+	if (currentKeyStates[SDL_SCANCODE_P] && this->pauseTimer.getTicks() > PAUSE_COOLDOWN_TICKS)
+	{
+		this->model->unPauseGame();
+		this->pauseTimer.stop();
+		this->pauseTimer.start();
+	}
 }
 
 int main(int argc, char* argv[])

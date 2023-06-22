@@ -635,6 +635,7 @@ void ClassicSpaceBattleView::createHudElements()
 {
 	//test method
 	SDL_Color color = {255,255,255};
+	SDL_Color red = { 255,0,0 };
 	
 	//score text
 	std::shared_ptr<Drawable> scorePointer(new DrawableText(this->hudFont, color, "SCORE < 1 >", this->model->getGameBoard()->getScoreX(), this->model->getGameBoard()->getScoreY(), this->screenSurface->format, this->renderer));
@@ -668,6 +669,16 @@ void ClassicSpaceBattleView::createHudElements()
 	std::shared_ptr<DrawableText> lifes(new DrawableText(this->hudFont, color, std::to_string(this->lifes), this->model->getGameBoard()->getLifesNumberX(), this->model->getGameBoard()->getLifesY(), this->screenSurface->format, this->renderer));
 	this->changingText[SCORE] = score;
 	this->changingText[LIFES] = lifes;	
+
+
+	//pause screen elements
+	//we need to have the width of the text to properly calculate its positioning
+	int *pauseWidth = new int(0);
+	TTF_SizeText(this->hudFont, "PAUSED", pauseWidth, NULL);
+
+	std::shared_ptr<DrawableText> pauseText(new DrawableText(this->hudFont, red, "PAUSED", this->model->getGameBoard()->getXCenter() - *pauseWidth/2, this->model->getGameBoard()->getHeight()/2, this->screenSurface->format, this->renderer));
+	delete pauseWidth;
+	this->pauseDrawableElements.push_back(pauseText);
 
 	//ship sprites
 	for (int i = 1; i < this->lifes; i++)
@@ -721,9 +732,19 @@ void ClassicSpaceBattleView::update()
 
 	renderHUD();
 
+	if (this->model->isGamePaused())
+	{
+		renderPauseElements();
+	}
+	else
+	{
+		audioUpdate();
+	}
+
 	SDL_RenderPresent(this->renderer);
 
-	audioUpdate();
+	
+	
 }
 
 bool ClassicSpaceBattleView::changeModelAndRestart(ClassicSpaceBattle* model)
@@ -740,6 +761,7 @@ bool ClassicSpaceBattleView::changeModelAndRestart(ClassicSpaceBattle* model)
 	this->shields.clear();
 	this->changingText.clear();
 	this->lifesShips.clear();
+	this->pauseDrawableElements.clear();
 	while(!this->mainMusic.empty())
 	{
 		this->mainMusic.pop();
@@ -941,6 +963,15 @@ void ClassicSpaceBattleView::renderHUD()
 
 
 	return;
+}
+
+void ViewEntities::ClassicSpaceBattleView::renderPauseElements()
+{
+	for (int i = 0; i < this->pauseDrawableElements.size(); i++)
+	{
+		this->pauseDrawableElements[i]->draw();
+	}
+
 }
 
 void ClassicSpaceBattleView::audioUpdate()

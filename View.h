@@ -210,6 +210,7 @@ namespace ViewEntities
 			void renderBullets();
 			void renderExplosions();
 			void renderHUD();
+			void renderPauseElements();
 			void audioUpdate();
 			void addExplosion(int,int);
 			string generateScoreString();
@@ -222,6 +223,7 @@ namespace ViewEntities
 			vector<std::shared_ptr<DrawableObject>> bullets;
 			vector<vector<std::pair<std::shared_ptr<DrawableObject>, std::shared_ptr<DrawableObject>>>> shields;
 			vector< std::shared_ptr<Drawable>> fixedDrawableElements;
+			vector< std::shared_ptr<Drawable>> pauseDrawableElements;
 			vector< std::shared_ptr<PureDrawable>> lifesShips;
 			vector< std::shared_ptr<DrawableText>> changingText;
 			queue<ExplosionDrawable*> explosions;

@@ -548,6 +548,9 @@ namespace GameEntities
 			int getPlayerLifes();
 			int getScore();
 			int getEnemiesRemaining();
+			void pauseGame();
+			void unPauseGame();
+			bool isGamePaused();
 
 	};
 
